@@ -248,7 +248,7 @@
             "imageReference":"[variables('imageReference')]"
           },
           "osProfile": {
-            "computerName": "[parameters('vmssName')]",
+            "computerNamePrefix":"[parameters('vmssName')]",
             "adminUsername": "[parameters('adminUsername')]",
             "linuxConfiguration": {
               "disablePasswordAuthentication": "true",
