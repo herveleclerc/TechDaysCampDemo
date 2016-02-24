@@ -340,7 +340,7 @@
                       "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/deploy.sh",
                       "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/docker.sh"
                     ],
-                    "commandToExecute":"bash install_lap.sh"
+                    "commandToExecute":"bash deploy.sh"
                   }
                 }
               },
