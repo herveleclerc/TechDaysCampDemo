@@ -68,7 +68,7 @@
       "metadata": {
         "description": "SSH rsa public key file as a string."
       }
-    },
+    }
   },
   "variables":{
     "apiVersion":"2015-06-15",
