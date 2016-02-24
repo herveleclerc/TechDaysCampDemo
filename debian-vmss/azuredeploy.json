@@ -10,16 +10,16 @@
         "West US",
         "Central US",
         "South Central US",
-  "North Central US",
+        "North Central US",
         "North Europe",
         "West Europe",
         "Southeast Asia",
         "East Asia",
         "Japan West",
         "Japan East",
-  "Brazil South",
-  "Australia East",
-  "Australia Southeast"
+        "Brazil South",
+        "Australia East",
+        "Australia Southeast"
       ],
       "metadata":{
         "description":"Azure region where all resources will be deployed. This is distinct from resource group location."
@@ -244,18 +244,20 @@
             },
             "imageReference":"[variables('imageReference')]"
           },
-          "osProfile":{
-            "computerNamePrefix":"[parameters('vmssName')]",
-            "adminUsername":"[parameters('adminUsername')]",
-            "linuxConfiguration": {
+          "osProfile": {
+            "computerName": "[parameters('vmssName')]",
+            "adminUsername": "[parameters('adminUsername')]",
             "disablePasswordAuthentication": "true",
-            "ssh": {
-              "publicKeys": [
-                {
-                  "path": "[variables('sshKeyPath')]",
-                  "keyData": "[parameters('sshKeyData')]"
-                }
-              ]
+            "linuxConfiguration": {
+              "disablePasswordAuthentication": "true",
+              "ssh": {
+                "publicKeys": [
+                  {
+                    "path": "[variables('sshKeyPath')]",
+                    "keyData": "[parameters('sshKeyData')]"
+                  }
+                ]
+              }
             }
           },
           "networkProfile":{
