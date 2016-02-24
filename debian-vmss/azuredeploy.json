@@ -4,6 +4,7 @@
   "parameters":{
     "resourceLocation":{
       "type":"string",
+      "defaultValue":"North Europe",
       "allowedValues":[
         "East US",
         "East US 2",
@@ -52,6 +53,7 @@
     },
     "instanceCount":{
       "type":"int",
+      "defaultValue":"5",
       "metadata":{
         "description":"Number of VM instances (100 or less)."
       },
@@ -59,6 +61,7 @@
     },
     "adminUsername":{
       "type":"string",
+      "defaultValue":"devops",
       "metadata":{
         "description":"Admin username on all VMs."
       }
