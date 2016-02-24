@@ -246,8 +246,7 @@
           },
           "osProfile": {
             "computerName": "[parameters('vmssName')]",
-            "adminUsername": "[parameters('adminUsername')]",
-            "disablePasswordAuthentication": "true",
+            "adminUsername": "[parameters('adminUsername')]"
             "linuxConfiguration": {
               "disablePasswordAuthentication": "true",
               "ssh": {
