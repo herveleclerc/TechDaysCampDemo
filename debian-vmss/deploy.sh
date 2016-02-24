@@ -11,6 +11,9 @@ done
 pip install PyYAML jinja2 paramiko
 git clone https://github.com/ansible/ansible.git
 cd ansible
+git submodule update --init --recursive
 make install
 mkdir /etc/ansible
-cp ~/ansible/examples/hosts /etc/ansible/.
+cp examples/hosts /etc/ansible/.
+echo "[localhost]" >> /etc/ansible/hosts
+echo "127.0.0.1"   >> /etc/ansible/hosts
