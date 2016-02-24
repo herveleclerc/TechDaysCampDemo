@@ -1,0 +1,27 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceLocation": {
+      "value": "North Europe"
+    },
+    "vmSku": {
+      "value": "Standard_A1"
+    },
+    "debianOSVersion": {
+      "value": "8"
+    },
+    "vmssName": {
+      "value": "GEN-UNIQUE-8"
+    },
+    "instanceCount": {
+      "value": 5
+    },
+    "adminUsername": {
+      "value": "devops"
+    },
+    "sshKeyData": {
+      "value": "GEN-SSH-PUB-KEY"
+    }
+  }
+}
