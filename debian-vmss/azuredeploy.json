@@ -10,16 +10,16 @@
         "West US",
         "Central US",
         "South Central US",
-	"North Central US",
+  "North Central US",
         "North Europe",
         "West Europe",
         "Southeast Asia",
         "East Asia",
         "Japan West",
         "Japan East",
-	"Brazil South",
-	"Australia East",
-	"Australia Southeast"
+  "Brazil South",
+  "Australia East",
+  "Australia Southeast"
       ],
       "metadata":{
         "description":"Azure region where all resources will be deployed. This is distinct from resource group location."
@@ -40,7 +40,7 @@
         "7"
       ],
       "metadata":{
-        "description":"The Debian version for the VM. This will pick a fully patched image of this given Debian version. Allowed values are: 8.0, 7.0"
+        "description":"The Debian version for the VM. This will pick a fully patched image of this given Debian version. Allowed values are: 15.10, 14.04.2-LTS."
       }
     },
     "vmssName":{
@@ -68,7 +68,7 @@
       "metadata": {
         "description": "SSH rsa public key file as a string."
       }
-    }
+    },
   },
   "variables":{
     "apiVersion":"2015-06-15",
@@ -82,6 +82,7 @@
       "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), '3')))]",
       "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), '4')))]"
     ],
+    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "vhdContainerName":"[concat(parameters('vmssName'), 'vhd')]",
     "osDiskName":"[concat(parameters('vmssName'), 'osdisk')]",
     "addressPrefix":"10.0.0.0/16",
@@ -247,15 +248,14 @@
             "computerNamePrefix":"[parameters('vmssName')]",
             "adminUsername":"[parameters('adminUsername')]",
             "linuxConfiguration": {
-              "disablePasswordAuthentication": "true",
-              "ssh": {
-                "publicKeys": [
-                 {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
                   "path": "[variables('sshKeyPath')]",
                   "keyData": "[parameters('sshKeyData')]"
-                 }
-                ]
-              }
+                }
+              ]
             }
           },
           "networkProfile":{
