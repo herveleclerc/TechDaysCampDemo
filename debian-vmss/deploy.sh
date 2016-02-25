@@ -17,3 +17,9 @@ mkdir /etc/ansible
 cp examples/hosts /etc/ansible/.
 echo "[localhost]" >> /etc/ansible/hosts
 echo "127.0.0.1"   >> /etc/ansible/hosts
+
+# Record private IP
+cd /usr/local
+touch privateIP.txt
+
+echo $1 >> privateIP.txt
