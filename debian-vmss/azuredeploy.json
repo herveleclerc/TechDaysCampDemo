@@ -340,7 +340,7 @@
                       "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/deploy.sh",
                       "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/docker.sh"
                     ],
-                    "commandToExecute":"bash deploy.sh"
+                    "commandToExecute": "['bash deploy.sh', reference(concat(variables('nicName'), '0')).ipConfigurations[0].properties.privateIPAddress)]"
                   }
                 }
               },
