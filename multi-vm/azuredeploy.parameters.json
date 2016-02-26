@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "newStorageAccountName": {
-      "value": "your storage"
+      "value": "GEN-UNIQUE-8"
     },
     "adminUserName": {
       "value": "admin name"
@@ -12,13 +12,13 @@
       "value": "admin password"
     },
     "vmDnsName": {
-      "value": "unique dns name"
+      "value": "GEN-UNIQUE-10"
     },
     "numberOfInstances": {
       "value": "number of VMs to create"
     },
     "availabilitySetName": {
-      "value": "availability set name"
+      "value": "GEN-UNIQUE-8"
     },
     "imagePublisher": {
       "value": "image Publisher"
