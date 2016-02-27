@@ -96,7 +96,7 @@
     "vmExtensionName": "CustomScript",
     "vmName": "[parameters('vmDnsName')]",
     "storageAccountType": "Standard_LRS",
-    "publicIPAddressName": "awpublicip",
+    "publicIPAddressName": "[concat(variables('vmName'),'_pubip', uniqueString(variables('vmName')))]",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
     "virtualNetworkName": "awVnetdeb",
@@ -105,8 +105,8 @@
     "subnet2Name": "subnet-2",
     "subnet1Prefix": "10.0.0.0/24",
     "subnet2Prefix": "10.0.1.0/24",
-    "nicName": "awnic",
-    "dnsName": "[variables('subnet1Name')]"
+    "nicName": "[concat(variables('vmName'),'_nic', uniqueString(variables('vmName')))]",
+    "dnsName": "[concat(variables('vmName'), uniqueString(variables('vmName')))]"
   },
   "resources": [
     {
