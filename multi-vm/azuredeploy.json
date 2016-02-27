@@ -2,150 +2,113 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "newStorageAccountName": {
-      "type": "string",
-      "metadata": {
-        "description": "Unique  Name for the Storage Account where the Virtual Machine's disks will be placed"
-      }
-    },
-    "vmDnsName": {
-      "type": "string",
-      "metadata": {
-        "description": "DNS  name for the VM"
-      }
-    },
-    "numberOfInstances": {
-      "type": "int",
-      "defaultValue": 2,
-      "metadata": {
-        "description": "Number of VM instances to create, default is 2"
-      }
-    },
-    "availabilitySetName": {
-      "type": "string",
-      "metadata": {
-        "description": "Availability Set name for the VMs"
-      }
-    },
-    "adminUserName": {
-      "type": "string",
-      "defaultValue": "devops",
-      "metadata": {
-        "description": "Admin user name for the Virtual Machines"
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Admin password for the Virtual Machines"
-      }
-    },
-    "imagePublisher": {
-      "type": "string",
-      "defaultValue": "credativ",
-      "metadata": {
-        "description": " Publisher for the OS image, the default is Canonical"
-      }
-    },
-    "imageOffer": {
-      "type": "string",
-      "defaultValue": "Debian",
-      "metadata": {
-        "description": "The name of the image offer. The default is Debian"
-      }
-    },
-    "imageSKU": {
-      "type": "string",
-      "defaultValue": "8",
-      "metadata": {
-        "description": "Version of the image. The default is 8 (Jessie)"
-      }
-    },
     "location": {
       "type": "string",
-      "defaultValue": "North Europe",
+      "defaultValue": "West US",
+      "allowedValues": [
+        "East US",
+        "West US",
+        "West Europe",
+        "East Asia",
+        "South East Asia"
+      ],
       "metadata": {
-        "description": "Location for the VM, default is West US"
+        "description": "Location of resources"
+      }
+    },
+    "newStorageAccountName": {
+      "type": "string",
+      "defaultValue": "storageaccount",
+      "metadata": {
+        "description": "Name of the storage account for VM OS Disks"
       }
     },
     "vmSize": {
       "type": "string",
       "defaultValue": "Standard_A1",
+      "allowedValues": [
+        "Standard_A1",
+        "Standard_A2",
+        "Standard_A3",
+        "Standard_A4"
+      ],
       "metadata": {
-        "description": "VM Size"
+        "description": "Instance size for the VMs"
       }
     },
-    "fileUris": {
+    "numberOfNodes": {
+      "type": "int",
+      "defaultValue": 3,
+      "metadata": {
+        "description": "Number of compute nodes to create"
+      }
+    },
+    "adminUserName": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/multi-vm/script.sh",
+      "defaultValue": "core",
       "metadata": {
-        "description": "The uri list of files. Split by a space."
+        "description": "Username to login to the VMs"
       }
     },
-    "commandToExecute": {
+    "sshKeyData": {
       "type": "string",
-      "defaultValue": "bash script.sh",
       "metadata": {
-        "description": "The command to execute."
+        "description": "Public key for SSH authentication"
       }
     },
+    "discoveryUrl": {
+      "type": "string",
+      "metadata": {
+        "description": "Discovery url for Fleet cluster"
+      }
+    }
   },
   "variables": {
+    "virtualNetworkName": "ClusterVNET",
+    "addressPrefix": "10.0.0.0/16",
+    "subnet1Name": "Subnet-1",
+    "subnet1Prefix": "10.0.0.0/24",
+    "publicIPAddressType": "Dynamic",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-    "vmExtensionName": "CustomScript",
-    "vmName": "[parameters('vmDnsName')]",
-    "storageAccountType": "Standard_LRS",
-    "publicIPAddressName": "[concat(variables('vmName'),'_pubip', uniqueString(variables('vmName')))]",
-    "publicIPAddressType": "Dynamic",
+    "vmNamePrefix": "hlcoreos",
+    "imageSku": "Stable",
     "vmStorageAccountContainerName": "vhds",
-    "virtualNetworkName": "awVnetdeb",
-    "addressPrefix": "10.0.0.0/16",
-    "subnet1Name": "subnet-1",
-    "subnet2Name": "subnet-2",
-    "subnet1Prefix": "10.0.0.0/24",
-    "subnet2Prefix": "10.0.1.0/24",
-    "nicName": "[concat(variables('vmName'),'_nic', uniqueString(variables('vmName')))]",
-    "dnsName": "[concat(variables('vmName'), uniqueString(variables('vmName')))]"
+    "storageAccountType": "Standard_LRS",
+    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+    "unitFile": "[concat('#cloud-config\n\ncoreos:\n  etcd:\n    discovery: ', parameters('discoveryUrl'),'\n    addr: $private_ipv4:4001\n    peer-addr: $private_ipv4:7001\n  units:\n    - name: etcd.service\n      command: start\n    - name: fleet.service\n      command: start')]"
   },
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('newStorageAccountName')]",
-      "apiVersion": "2015-05-01-preview",
       "location": "[parameters('location')]",
+      "apiVersion": "2015-05-01-preview",
       "properties": {
         "accountType": "[variables('storageAccountType')]"
       }
     },
     {
-      "type": "Microsoft.Compute/availabilitySets",
-      "name": "[parameters('availabilitySetName')]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[parameters('location')]",
-      "properties": {}
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(variables('publicIPAddressName'),copyIndex())]",
-      "location": "[parameters('location')]",
+      "name": "[concat('publicIP', copyindex())]",
       "copy": {
-        "name": "publicIPLoop",
-        "count": "[parameters('numberOfInstances')]"
+        "name": "ipLoop",
+        "count": "[parameters('numberOfNodes')]"
       },
+      "location": "[parameters('location')]",
+      "apiVersion": "2015-05-01-preview",
       "properties": {
         "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('vmDnsName')]"
+          "domainNameLabel": "[concat(variables('vmNamePrefix'), copyindex())]"
         }
       }
     },
     {
-      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
       "location": "[parameters('location')]",
+      "apiVersion": "2015-05-01-preview",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -158,29 +121,23 @@
             "properties": {
               "addressPrefix": "[variables('subnet1Prefix')]"
             }
-          },
-          {
-            "name": "[variables('subnet2Name')]",
-            "properties": {
-              "addressPrefix": "[variables('subnet2Prefix')]"
-            }
           }
         ]
       }
     },
     {
-      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'),copyIndex())]",
-      "location": "[parameters('location')]",
+      "name": "[concat('nic', copyindex())]",
       "copy": {
         "name": "nicLoop",
-        "count": "[parameters('numberOfInstances')]"
+        "count": "[parameters('numberOfNodes')]"
       },
+      "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'),copyIndex())]",
+        "[concat('Microsoft.Network/publicIPAddresses/', 'publicIP', copyindex())]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
+      "apiVersion": "2015-05-01-preview",
       "properties": {
         "ipConfigurations": [
           {
@@ -188,7 +145,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIpAddresses', concat('publicIP', copyindex()))]"
               },
               "subnet": {
                 "id": "[variables('subnet1Ref')]"
@@ -199,42 +156,49 @@
       }
     },
     {
-      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('vmName'),copyIndex())]",
-      "location": "[parameters('location')]",
+      "name": "[concat(variables('vmNamePrefix'), copyindex())]",
       "copy": {
         "name": "vmLoop",
-        "count": "[parameters('numberOfInstances')]"
+        "count": "[parameters('numberOfNodes')]"
       },
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]",
-        "[concat('Microsoft.Compute/availabilitySets/', parameters('availabilitySetName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', 'nic', copyindex())]"
       ],
+      "apiVersion": "2015-05-01-preview",
       "properties": {
-        "availabilitySet": {
-          "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]"
-        },
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computerName": "[concat(variables('vmName'),copyIndex())]",
+          "computerName": "[concat(variables('vmNamePrefix'), copyindex())]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+          "customData": "[base64(variables('unitFile'))]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('sshKeyData')]"
+                }
+              ]
+            }
+          }
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "[parameters('imagePublisher')]",
-            "offer": "[parameters('imageOffer')]",
-            "sku": "[parameters('imageSKU')]",
+            "publisher": "CoreOS",
+            "offer": "CoreOS",
+            "sku": "[variables('imageSku')]",
             "version": "latest"
           },
           "osDisk": {
-            "name": "osdisk",
+            "name": "[concat(variables('vmNamePrefix'), copyindex())]",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk.vhd')]"
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/',variables('vmNamePrefix'), copyindex(),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -243,35 +207,9 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'),copyIndex())]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat('nic',copyindex()))]"
             }
           ]
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'),copyIndex(),'/', variables('vmExtensionName'))]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[parameters('location')]",
-      "copy": {
-        "name": "extensionLoop",
-        "count": "[parameters('numberOfInstances')]"
-      },
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyIndex())]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.3",
-        "settings": {
-          "fileUris": "[split(parameters('fileUris'), ' ')]",
-          "commandToExecute": "[parameters('commandToExecute')]"
-        },
-        "protectedSettings": {
-          "storageAccountName": "[parameters('storageAccountName')]",
-          "storageAccountKey": "[parameters('storageAccountKey')]"
         }
       }
     }
