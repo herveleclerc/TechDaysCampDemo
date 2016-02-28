@@ -94,6 +94,17 @@
         "description": "Instance size for the VMs"
       }
     },
+    "debianOSVersion":{
+      "type":"string",
+      "defaultValue":"8",
+      "allowedValues":[
+        "8",
+        "7"
+      ],
+      "metadata":{
+        "description":"The Debian version for the VM. This will pick a fully patched image of this given Debian version. Allowed values are: 15.10, 14.04.2-LTS."
+      }
+    },
     "numberOfNodes": {
       "type": "int",
       "defaultValue": 3,
@@ -127,7 +138,6 @@
     "publicIPAddressType": "Dynamic",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-    "imageSku": "8",
     "vmStorageAccountContainerName": "vhds",
     "storageAccountType": "Standard_LRS",
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
@@ -252,7 +262,7 @@
           "imageReference": {
             "publisher": "credativ",
             "offer": "Debian",
-            "sku": "[variables('imageSku')]",
+            "sku":"[parameters('debianOSVersion')]",
             "version": "latest"
           },
           "osDisk": {

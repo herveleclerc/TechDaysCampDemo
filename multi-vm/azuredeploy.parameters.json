@@ -19,6 +19,9 @@
     },
     "sshKeyData": {
       "value": "GEN-SSH-PUB-KEY"
+    },
+    "debianOSVersion": {
+      "value": "8"
     }
   }
 }
