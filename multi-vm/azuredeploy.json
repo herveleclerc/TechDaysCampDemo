@@ -175,8 +175,10 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "[split(parameters('fileUris'), ' ')]"
-          ],
+            "[parameters('fileUris')]"
+          ]
+        },
+        "protectedSettings": {
           "commandToExecute": "[parameters('commandToExecute')]"
         }
       }
