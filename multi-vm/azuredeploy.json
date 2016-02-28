@@ -124,6 +124,20 @@
       "metadata": {
         "description": "Public key for SSH authentication"
       }
+    },
+    "fileUris": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/multi-vm/deploy.sh",
+      "metadata": {
+        "description": "The uri list of files. Split by a space."
+      }
+    },
+    "commandToExecute": {
+      "type": "string",
+      "defaultValue": "bash deploy.sh",
+      "metadata": {
+        "description": "The command to execute."
+      }
     }
   },
   "variables": {
@@ -143,6 +157,30 @@
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
   },
   "resources": [
+   {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vmNamePrefix'),copyIndex(),'/', variables('vmNamePrefix'))]",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[parameters('location')]",
+      "copy": {
+        "name": "extensionLoop",
+        "count": "[parameters('numberOfNodes')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmNamePrefix'), copyIndex())]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.2",
+        "settings": {
+          "fileUris": [
+            "[split(parameters('fileUris'), ' ')]"
+          ],
+          "commandToExecute": "[parameters('commandToExecute')]"
+        }
+      }
+    }
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('newStorageAccountName')]",

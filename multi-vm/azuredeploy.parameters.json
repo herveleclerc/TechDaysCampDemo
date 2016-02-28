@@ -22,6 +22,12 @@
     },
     "debianOSVersion": {
       "value": "8"
+    },
+    "fileUris": {
+      "value": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/multi-vm/deploy.sh"
+    },
+    "commandToExecute": {
+      "value": "bash deploy.sh"
     }
   }
 }
