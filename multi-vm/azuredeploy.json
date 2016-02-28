@@ -28,7 +28,7 @@
     },
     "newStorageAccountName": {
       "type": "string",
-      "defaultValue": "storageaccount",
+      "defaultValue": "awdebnodestorage",
       "metadata": {
         "description": "Name of the storage account for VM OS Disks"
       }
