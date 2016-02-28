@@ -155,7 +155,7 @@
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
-    "vmNamePrefix": "awdebnode",
+    "vmNamePrefix": "awansnode",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), variables('vmNamePrefix'))]",
     "availabilitySet": "[variables('vmNamePrefix')]",
     "publicIPAddressType": "Dynamic",
@@ -196,7 +196,7 @@
           "fileUris": [
             "[variables('scriptUrlInstallAnsible')]"
           ],
-          "commandToExecute": "[concat('bash deploy-via-ansible.sh ', parameters('numberOfNodes'), ' ', parameters('vmNamePrefix'),' ', parameters('location'))]"
+          "commandToExecute": "[concat('bash deploy-via-ansible.sh ', parameters('numberOfNodes'), ' ', variables('vmNamePrefix'),' ', parameters('location'))]"
         }
       }
     },
