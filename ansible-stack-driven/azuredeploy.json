@@ -127,7 +127,7 @@
     },
     "fileUris": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/multi-vm/deploy.sh",
+      "defaultValue": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy.sh",
       "metadata": {
         "description": "The uri list of files. Split by a space."
       }
@@ -138,11 +138,18 @@
       "metadata": {
         "description": "The command to execute."
       }
-    }
+    },
+    "ansibleVmSize": {
+      "type": "string",
+      "defaultValue": "Standard_A0",
+      "metadata": {
+        "description": "Size of the Ansible virtual machine"
+      }
+    },
   },
   "variables": {
     "apiVersion": "2015-06-15",
-    "virtualNetworkName": "DebClusterVNET",
+    "virtualNetworkName": "AnsibleStackVNET",
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
@@ -154,9 +161,43 @@
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
     "vmStorageAccountContainerName": "vhds",
     "storageAccountType": "Standard_LRS",
-    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
+    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+    "scriptUrlInstallAnsible": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy.sh",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
+    "subnetDmzName": "Subnet-DMZ",
+    "subnetDmzPrefix": "10.1.0.0/24",
+    "subnetDmzRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetDmzName'))]",
+    "hcDomainName": "[concat('hc',variables('vmNamePrefix'))]",
+    "imageReference": {
+            "publisher": "credativ",
+            "offer": "Debian",
+            "sku":"[parameters('debianOSVersion')]",
+            "version": "latest"
+    }
   },
   "resources": [
+    {
+      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('hcdomainName'), '/install_ansible')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('hcdomainName'))]",
+        "vmLoop",
+        "extensionLoop"
+      ],
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.2",
+        "settings": {
+          "fileUris": [
+            "[variables('scriptUrlInstallAnsible')]"
+          ],
+          "commandToExecute": "[concat('bash deploy-via-ansible.sh ', parameters('numberOfNodes'), ' ', parameters('vmNamePrefix'),' ', parameters('location'))]"
+        }
+      }
+    },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('vmNamePrefix'),copyIndex(),'/', variables('vmNamePrefix'))]",
@@ -177,7 +218,7 @@
           "fileUris": [
             "[parameters('fileUris')]"
           ],
-          "commandToExecute": "[parameters('commandToExecute')]"  
+          "commandToExecute": "[concat(parameters('commandToExecute'), ' ', reference(concat('nic', copyindex())).ipConfigurations[0].properties.privateIPAddress)]"
         }     
       }
     },
@@ -214,6 +255,43 @@
       }
     },
     {
+      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "ansiblepip",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('hcDomainName')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "nicansible",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses','ansiblepip')]"
+              },
+              "subnet": {
+                "id": "[variables('subnetDmzRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
       "location": "[parameters('location')]",
@@ -229,6 +307,12 @@
             "name": "[variables('subnet1Name')]",
             "properties": {
               "addressPrefix": "[variables('subnet1Prefix')]"
+            }
+          },
+          {
+            "name": "[parameters('subnetDmzName')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnetDmzPrefix')]"
             }
           }
         ]
@@ -265,6 +349,54 @@
       }
     },
     {
+      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[parameters('hcDomainName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', 'nicansible')]",
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('ansibleVmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('hcDomainName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('sshKeyData')]"
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "imageReference": "[variables('imageReference')]",
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/vhds/', parameters('hcDomainName'), '-osdisk.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces','nicansible')]"
+            }
+          ]
+        }
+      }
+    },
+    {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(variables('vmNamePrefix'), copyindex())]",
       "copy": {
@@ -297,12 +429,7 @@
           }
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "credativ",
-            "offer": "Debian",
-            "sku":"[parameters('debianOSVersion')]",
-            "version": "latest"
-          },
+          "imageReference": "[variables('imageReference')]",
           "osDisk": {
             "name": "[concat(variables('vmNamePrefix'), copyindex())]",
             "vhd": {
