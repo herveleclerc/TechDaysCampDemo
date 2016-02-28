@@ -157,7 +157,7 @@
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
   },
   "resources": [
-   {
+    {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('vmNamePrefix'),copyIndex(),'/', variables('vmNamePrefix'))]",
       "apiVersion": "[variables('apiVersion')]",
