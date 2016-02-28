@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "location": {
-      "value": "West US"
+      "value": "North Europe"
     },
     "newStorageAccountName": {
       "value": "GEN-UNIQUE"
@@ -19,9 +19,6 @@
     },
     "sshKeyData": {
       "value": "GEN-SSH-PUB-KEY"
-    },
-    "discoveryUrl": {
-      "value": "https://discovery.etcd.io/<identifier>"
     }
   }
 }
