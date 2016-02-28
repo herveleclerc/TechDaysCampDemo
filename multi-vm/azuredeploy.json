@@ -122,7 +122,7 @@
     "subnet1Prefix": "10.0.0.0/24",
     "vmNamePrefix": "awdebnode",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), variables('vmNamePrefix'))]",
-    "availabilitySet": "[parameters('vmNamePrefix')]",
+    "availabilitySet": "[variables('vmNamePrefix')]",
     "publicIPAddressType": "Dynamic",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
