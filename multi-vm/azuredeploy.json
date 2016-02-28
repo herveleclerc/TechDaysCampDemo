@@ -120,10 +120,12 @@
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
+    "vmNamePrefix": "awdebnode",
+    "storageAccountName": "[concat(uniquestring(resourceGroup().id), variables('vmNamePrefix'))]",
+    "availabilitySet": "[parameters('vmNamePrefix')]",
     "publicIPAddressType": "Dynamic",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-    "vmNamePrefix": "hlcoreos",
     "imageSku": "8",
     "vmStorageAccountContainerName": "vhds",
     "storageAccountType": "Standard_LRS",
@@ -138,6 +140,13 @@
       "properties": {
         "accountType": "[variables('storageAccountType')]"
       }
+    },
+    {
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[variables('availabilitySet')]",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "properties": {}
     },
     {
       "type": "Microsoft.Network/publicIPAddresses",
