@@ -314,7 +314,7 @@
           {
             "name": "[variables('subnetDmzName')]",
             "properties": {
-              "addressPrefix": "[parameters('subnetDmzPrefix')]"
+              "addressPrefix": "[variables('subnetDmzPrefix')]"
             }
           }
         ]
