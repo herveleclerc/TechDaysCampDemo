@@ -180,7 +180,7 @@
           "commandToExecute": "[parameters('commandToExecute')]"
         }
       }
-    }
+    },
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('newStorageAccountName')]",
