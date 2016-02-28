@@ -1,3 +1,5 @@
 #!/bin/bash
 
-echo "done" >> /tmp/result.txt
+echo "done" > /tmp/results.txt
+
+exit 0

@@ -176,11 +176,9 @@
         "settings": {
           "fileUris": [
             "[parameters('fileUris')]"
-          ]
-        },
-        "protectedSettings": {
-          "commandToExecute": "[parameters('commandToExecute')]"
-        }
+          ],
+          "commandToExecute": "[parameters('commandToExecute')]"  
+        }     
       }
     },
     {
