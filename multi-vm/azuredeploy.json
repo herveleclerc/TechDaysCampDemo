@@ -116,6 +116,7 @@
     }
   },
   "variables": {
+    "apiVersion": "2015-06-15",
     "virtualNetworkName": "DebClusterVNET",
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "Subnet-1",
@@ -136,7 +137,7 @@
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('newStorageAccountName')]",
       "location": "[parameters('location')]",
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "[variables('apiVersion')]",
       "properties": {
         "accountType": "[variables('storageAccountType')]"
       }
@@ -156,7 +157,7 @@
         "count": "[parameters('numberOfNodes')]"
       },
       "location": "[parameters('location')]",
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "[variables('apiVersion')]",
       "properties": {
         "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
         "dnsSettings": {
@@ -168,7 +169,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
       "location": "[parameters('location')]",
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "[variables('apiVersion')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -197,7 +198,7 @@
         "[concat('Microsoft.Network/publicIPAddresses/', 'publicIP', copyindex())]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "[variables('apiVersion')]",
       "properties": {
         "ipConfigurations": [
           {
@@ -227,7 +228,7 @@
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
         "[concat('Microsoft.Network/networkInterfaces/', 'nic', copyindex())]"
       ],
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "[variables('apiVersion')]",
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
