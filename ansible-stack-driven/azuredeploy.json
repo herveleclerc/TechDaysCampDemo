@@ -149,7 +149,7 @@
   },
   "variables": {
     "apiVersion": "2015-06-15",
-    "virtualNetworkName": "AnsibleStackVNET",
+    "virtualNetworkName": "AnsVNET",
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
@@ -163,10 +163,10 @@
     "storageAccountType": "Standard_LRS",
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "scriptUrlInstallAnsible": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy.sh",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetDmzName": "Subnet-DMZ",
     "subnetDmzPrefix": "10.1.0.0/24",
-    "subnetDmzRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetDmzName'))]",
+    "subnetDmzRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetDmzName'))]",
     "hcDomainName": "[concat('hc',variables('vmNamePrefix'))]",
     "imageReference": {
             "publisher": "credativ",
@@ -179,10 +179,10 @@
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(parameters('hcdomainName'), '/install_ansible')]",
+      "name": "[concat(variables('hcdomainName'), '/install_ansible')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('hcdomainName'))]",
+        "[concat('Microsoft.Compute/virtualMachines/', variables('hcdomainName'))]",
         "vmLoop",
         "extensionLoop"
       ],
@@ -272,7 +272,7 @@
       "name": "nicansible",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -310,7 +310,7 @@
             }
           },
           {
-            "name": "[parameters('subnetDmzName')]",
+            "name": "[variables('subnetDmzName')]",
             "properties": {
               "addressPrefix": "[parameters('subnetDmzPrefix')]"
             }
@@ -351,7 +351,7 @@
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[parameters('hcDomainName')]",
+      "name": "[variables('hcDomainName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', 'nicansible')]",
@@ -362,7 +362,7 @@
           "vmSize": "[parameters('ansibleVmSize')]"
         },
         "osProfile": {
-          "computerName": "[parameters('hcDomainName')]",
+          "computerName": "[variables('hcDomainName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": "true",
@@ -381,7 +381,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/vhds/', parameters('hcDomainName'), '-osdisk.vhd')]"
+              "uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/vhds/', variables('hcDomainName'), '-osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
