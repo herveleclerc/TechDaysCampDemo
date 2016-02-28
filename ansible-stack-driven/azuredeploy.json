@@ -167,7 +167,7 @@
     "scriptUrlInstallAnsible": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy.sh",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetDmzName": "Subnet-DMZ",
-    "subnetDmzPrefix": "10.1.0.0/24",
+    "subnetDmzPrefix": "10.0.2.0/24",
     "subnetDmzRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetDmzName'))]",
     "hcDomainName": "[concat('hc',variables('vmNamePrefix'))]",
     "imageReference": {
