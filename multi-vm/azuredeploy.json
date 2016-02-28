@@ -103,7 +103,7 @@
     },
     "adminUserName": {
       "type": "string",
-      "defaultValue": "core",
+      "defaultValue": "devops",
       "metadata": {
         "description": "Username to login to the VMs"
       }
@@ -116,7 +116,7 @@
     }
   },
   "variables": {
-    "virtualNetworkName": "ClusterVNET",
+    "virtualNetworkName": "DebClusterVNET",
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
@@ -124,7 +124,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
     "vmNamePrefix": "hlcoreos",
-    "imageSku": "Stable",
+    "imageSku": "8",
     "vmStorageAccountContainerName": "vhds",
     "storageAccountType": "Standard_LRS",
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
@@ -240,8 +240,8 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "CoreOS",
-            "offer": "CoreOS",
+            "publisher": "credativ",
+            "offer": "Debian",
             "sku": "[variables('imageSku')]",
             "version": "latest"
           },
