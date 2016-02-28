@@ -4,13 +4,23 @@
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "West US",
-      "allowedValues": [
+      "defaultValue":"North Europe",
+      "allowedValues":[
         "East US",
+        "East US 2",
         "West US",
+        "Central US",
+        "South Central US",
+        "North Central US",
+        "North Europe",
         "West Europe",
+        "Southeast Asia",
         "East Asia",
-        "South East Asia"
+        "Japan West",
+        "Japan East",
+        "Brazil South",
+        "Australia East",
+        "Australia Southeast"
       ],
       "metadata": {
         "description": "Location of resources"
