@@ -184,6 +184,8 @@
     "subnetDmzPrefix": "10.0.2.0/24",
     "subnetDmzRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetDmzName'))]",
     "hcDomainName": "[concat('hc',variables('vmNamePrefix'))]",
+    "scriptBlobLocation": "keys/deploy-via-ansible.sh",
+    "scriptBlobUrl": "[concat('https://',parameters('vaultAccountName'),'.blob.core.windows.net/',variables('scriptBlobLocation'))]",
     "keysBlobLocation": "keys/id_rsa",
     "keysBlobUrl": "[concat('https://',parameters('vaultAccountName'),'.blob.core.windows.net/',variables('keysBlobLocation'))]",
     "pubBlobLocation": "keys/id_rsa.pub",
@@ -213,7 +215,7 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "[variables('scriptUrlInstallAnsible')]",
+            "[variables('scriptBlobUrl')]",
             "[variables('keysBlobUrl')]",
             "[variables('pubBlobUrl')]"
           ],
