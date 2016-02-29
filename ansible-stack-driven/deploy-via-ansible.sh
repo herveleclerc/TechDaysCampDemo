@@ -3,7 +3,11 @@
 function log()
 {
 	# Consider to log to an log server
-    echo "`date` : $1"
+	url="https://rocket.alterway.fr/hooks/44vAPspqqtD7Jtmtv/k4Tw89EoXiT5GpniG/HaxMfijFFi5v1YTEN68DOe5fzFBBxB4YeTQz6w3khFE%3D"
+	payload="payload={\"icon_emoji\":\":cloud:\",\"text\":\"$1\"}"
+  curl -X POST --data-urlencode "$payload" "$url"
+    
+  echo "`date` : $1"
 }
 
 function usage()
