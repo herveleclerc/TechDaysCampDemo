@@ -164,7 +164,7 @@
     "vmStorageAccountContainerName": "vhds",
     "storageAccountType": "Standard_LRS",
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
-    "scriptUrlInstallAnsible": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy.sh",
+    "scriptUrlInstallAnsible": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy-via-ansible.sh",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetDmzName": "Subnet-DMZ",
     "subnetDmzPrefix": "10.0.2.0/24",
