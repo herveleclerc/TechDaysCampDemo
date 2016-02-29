@@ -166,6 +166,8 @@
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "scriptUrlInstallAnsible": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy-via-ansible.sh",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
+    "ansibleIPAddressName": "ansiblepip",
+    "ansibleIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('ansibleIPAddressName'))]",
     "subnetDmzName": "Subnet-DMZ",
     "subnetDmzPrefix": "10.0.2.0/24",
     "subnetDmzRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetDmzName'))]",
@@ -196,7 +198,7 @@
           "fileUris": [
             "[variables('scriptUrlInstallAnsible')]"
           ],
-          "commandToExecute": "[concat('bash deploy-via-ansible.sh ', parameters('numberOfNodes'), ' ', variables('vmNamePrefix'),' ', parameters('location'))]"
+          "commandToExecute": "[concat('bash deploy-via-ansible.sh ', parameters('numberOfNodes'), ' ', variables('vmNamePrefix'),' ', reference(variables('ansibleIPAddressID'),providers('Microsoft.Network','publicIPAddresses').apiVersions[0]).dnsSettings.fqdn,' ', parameters('adminUsername'))]"
         }
       }
     },
@@ -259,7 +261,7 @@
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "ansiblepip",
+      "name": "[variables('ansibleIPAddressName')]",
       "location": "[parameters('location')]",
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
