@@ -75,6 +75,8 @@ chmod 644 /home/${sshu}/.ssh/id_rsa.pub
 # remove when debugging
 # rm id_rsa id_rsa.pub 
 
+let numberOfNodes=$numberOfNodes-1
+
 for i in $(seq 0 $numberOfNodes)
 do
 	log "trying to su - devops -c ssh -l ${sshu} ${vmNamePrefix}${i}.${tld} cat $FACTS/private-ip.fact"

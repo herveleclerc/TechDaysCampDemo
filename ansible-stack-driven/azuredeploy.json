@@ -130,7 +130,7 @@
       "type": "string",
       "defaultValue": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy.sh",
       "metadata": {
-        "description": "The uri list of files. Split by a space."
+        "description": "Deploy/SetUp script url."
       }
     },
     "commandToExecute": {
@@ -149,15 +149,9 @@
     },
     "vaultAccountName": {
       "type": "string",
-      "defaultValue": "ansiblekeys",
+      "defaultValue": "ansiblevault",
       "metadata": {
         "description": "Private storage account name in which you are storing your certificates for ansible and the template bash scripts"
-      }
-    },
-    "vaultAccountKey": {
-      "type": "string",
-      "metadata": {
-        "description": "Private storage account key"
       }
     }
   },
@@ -167,7 +161,7 @@
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
-    "vmNamePrefix": "awansnode",
+    "vmNamePrefix": "awtecnode",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), variables('vmNamePrefix'))]",
     "availabilitySet": "[variables('vmNamePrefix')]",
     "publicIPAddressType": "Dynamic",
@@ -176,7 +170,6 @@
     "vmStorageAccountContainerName": "vhds",
     "storageAccountType": "Standard_LRS",
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
-    "scriptUrlInstallAnsible": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy-via-ansible.sh",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "ansibleIPAddressName": "ansiblepip",
     "ansibleIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('ansibleIPAddressName'))]",
@@ -184,13 +177,13 @@
     "subnetDmzPrefix": "10.0.2.0/24",
     "subnetDmzRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetDmzName'))]",
     "hcDomainName": "[concat('hc',variables('vmNamePrefix'))]",
-    "scriptBlobLocation": "keys/deploy-via-ansible.sh",
+    "scriptBlobLocation": "scripts/deploy-via-ansible.sh",
     "scriptBlobUrl": "[concat('https://',parameters('vaultAccountName'),'.blob.core.windows.net/',variables('scriptBlobLocation'))]",
     "keysBlobLocation": "keys/id_rsa",
     "keysBlobUrl": "[concat('https://',parameters('vaultAccountName'),'.blob.core.windows.net/',variables('keysBlobLocation'))]",
     "pubBlobLocation": "keys/id_rsa.pub",
     "pubBlobUrl": "[concat('https://',parameters('vaultAccountName'),'.blob.core.windows.net/',variables('pubBlobLocation'))]",
-    "assetsStorageAccountId": "[resourceId('ansiblekeys','Microsoft.Storage/storageAccounts', parameters('vaultAccountName'))]",
+    "assetsStorageAccountId": "[resourceId('ansiblevault','Microsoft.Storage/storageAccounts', parameters('vaultAccountName'))]",
     "imageReference": {
             "publisher": "credativ",
             "offer": "Debian",
