@@ -72,8 +72,8 @@ chown -R $sshu: /home/${sshu}/.ssh
 chmod 400 /home/${sshu}/.ssh/id_rsa
 chmod 644 /home/${sshu}/.ssh/id_rsa.pub
 
-
-# rm id_rsa id_rsa.pub
+# remove when debugging
+# rm id_rsa id_rsa.pub 
 
 for i in $(seq 0 $numberOfNodes)
 do
