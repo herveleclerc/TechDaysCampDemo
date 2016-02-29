@@ -30,7 +30,7 @@
       "value": "bash deploy.sh"
     },
     "vaultAccountName": {
-      "value": "ansible-keys"
+      "value": "ansiblekeys"
     },
     "vaultAccountKey": {
       "value": ""
