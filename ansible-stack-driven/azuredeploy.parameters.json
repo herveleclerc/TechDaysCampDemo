@@ -28,6 +28,12 @@
     },
     "commandToExecute": {
       "value": "bash deploy.sh"
+    },
+    "vaultAccountName": {
+      "value": "ansible-keys"
+    },
+    "vaultAccountKey": {
+      "value": ""
     }
   }
 }

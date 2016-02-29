@@ -21,8 +21,16 @@ numberOfNodes=$1
 vmNamePrefix=$2
 ansiblefqdn=$3
 sshu=$4
-
 FACTS=/etc/ansible/facts
+export FACTS
+
+# Installation of curl for logging
+until apt-get -y update && apt-get -y install curl 
+do
+  log "Try again"
+  sleep 2
+done
+
 
 log "Begin Installation"
 
@@ -32,18 +40,44 @@ tld=$(echo $ansiblefqdn | sed "s?$p1\.??")
 log "tld is ${tld}"
 
 mkdir -p ~/.ssh
- 
+
+# Root User
+# No host Checking for root 
 cat << 'EOF' >> ~/.ssh/config
 Host *
     user devops
     StrictHostKeyChecking no
 EOF
 
-chmod 700 ~/.ssh
+cp id_rsa ~/.ssh/id_rsa
+cp id_rsa.pub ~/.ssh/id_rsa.pub
 
-for i in $(seq 1 $numberOfNodes)
+chmod 700 ~/.ssh
+chmod 400 ~/.ssh/id_rsa
+chmod 644 ~/.ssh/id_rsa.pub
+
+## Devops User
+# No host Checking for sshu 
+cat << 'EOF' >> /home/${sshu}/.ssh/config
+Host *
+    user devops
+    StrictHostKeyChecking no
+EOF
+
+cp id_rsa /home/${sshu}/.ssh/id_rsa
+cp id_rsa.pub /home/${sshu}/.ssh/id_rsa.pub
+
+chmod 700 /home/${sshu}/.ssh
+chown -R $sshu: /home/${sshu}/.ssh
+chmod 400 /home/${sshu}/.ssh/id_rsa
+chmod 644 /home/${sshu}/.ssh/id_rsa.pub
+
+
+# rm id_rsa id_rsa.pub
+
+for i in $(seq 0 $numberOfNodes)
 do
-	log "trying to ssh -l ${sshu} ${tld} cat $FACTS/private-ip.fact"
+	log "trying to su - devops -c ssh -l ${sshu} ${vmNamePrefix}${i}.${tld} cat $FACTS/private-ip.fact"
 
 	su - devops -c "ssh -l ${sshu} ${vmNamePrefix}${i}.${tld} cat $FACTS/private-ip.fact" >> /tmp/hosts.inv 
 done

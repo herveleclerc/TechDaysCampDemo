@@ -121,8 +121,7 @@
     },
     "sshKeyData": {
       "type": "string",
-      "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4pucOaPkE1/U+TmarD0+0OfBt7zHa0vC+PJlJD0ka59UIm2kzsvFZlIDyHMils/1f4lgvVX/R7jXT8pTXRj79T7u4jyq2o2JAtx2FNuawJyD6GBRzburuwJkdCEYnJWEiiARS6ivnvZUVrHtGd+c29xNuDb6IqYVWkeMGf4RQ3S5M+jG+W3Yf8XK7OcipNYJtExbKY5/M1AykNSggxuwsd443uyr+bCWB2g+YV1HnuUS+DxptZMh5tFT3rQyzshKMjWvZY64aAh+54Yok8aQhWsKFAw1s9ZhxJ9cTg5X4eUgiPP2LYX7MxTagyFdlqd8MbKYQF0qhzgCy2TfH/GhV hleclerc@machl.home
-",
+      "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLWadgtcq8rg0HMWlv1/1HQfRayLzGKmHg2ISmAJx+LQCa8SWCwBFGS0vKKwgdwhpMMCl0wI2/eURmxbpOF4Tp10jRikSIlSZyua7FU9VmlLWtYAmRQ42eWvmsCCI/IpgJ4LGODe8xDQtcXOtp3yUhkX5g9HHNwwR35Nnzum1VGMk4ftTA9CC3gfqWcIIKqQ+xE1BzqUNmGpJHghCgG/g8Oh7/sR05CXwASMoGTYuLpPHp2sEfGNm91CmnMa21ifaz4RMAcD2SwqReLgMmi0tZGUGQqLnzX/6ibJvpYSU5iZ/7qEzgDy83dBqaHbI0LEA4H0q59TJ2DWXYu+dloITz hleclerc@HeL.local",
       "metadata": {
         "description": "Public key for SSH authentication"
       }
@@ -148,6 +147,19 @@
         "description": "Size of the Ansible virtual machine"
       }
     },
+    "vaultAccountName": {
+      "type": "string",
+      "defaultValue": "ansible-keys",
+      "metadata": {
+        "description": "Private storage account name in which you are storing your certificates for ansible and the template bash scripts"
+      }
+    },
+    "vaultAccountKey": {
+      "type": "string",
+      "metadata": {
+        "description": "Private storage account key"
+      }
+    }
   },
   "variables": {
     "apiVersion": "2015-06-15",
@@ -172,6 +184,10 @@
     "subnetDmzPrefix": "10.0.2.0/24",
     "subnetDmzRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetDmzName'))]",
     "hcDomainName": "[concat('hc',variables('vmNamePrefix'))]",
+    "keysBlobLocation": "keys/id_rsa",
+    "keysBlobUrl": "[concat('https://',parameters('vaultAccountName'),'.blob.core.windows.net/',variables('keysBlobLocation'))]",
+    "pubBlobLocation": "keys/id_rsa.pub",
+    "pubBlobUrl": "[concat('https://',parameters('vaultAccountName'),'.blob.core.windows.net/',variables('pubBlobLocation'))]",
     "imageReference": {
             "publisher": "credativ",
             "offer": "Debian",
@@ -196,9 +212,15 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "[variables('scriptUrlInstallAnsible')]"
+            "[variables('scriptUrlInstallAnsible')]",
+            "[variables('keysBlobUrl')]",
+            "[variables('pubBlobUrl')]"
           ],
           "commandToExecute": "[concat('bash deploy-via-ansible.sh ', parameters('numberOfNodes'), ' ', variables('vmNamePrefix'),' ', reference(variables('ansibleIPAddressID'),providers('Microsoft.Network','publicIPAddresses').apiVersions[0]).dnsSettings.fqdn,' ', parameters('adminUsername'))]"
+        },
+        "protectedSettings": {
+          "storageAccountName": "[parameters('vaultAccountName')]",
+          "storageAccountKey": "[parameters('vaultAccountKey')]"
         }
       }
     },
