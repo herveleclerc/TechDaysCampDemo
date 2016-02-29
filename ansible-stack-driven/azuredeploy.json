@@ -188,6 +188,7 @@
     "keysBlobUrl": "[concat('https://',parameters('vaultAccountName'),'.blob.core.windows.net/',variables('keysBlobLocation'))]",
     "pubBlobLocation": "keys/id_rsa.pub",
     "pubBlobUrl": "[concat('https://',parameters('vaultAccountName'),'.blob.core.windows.net/',variables('pubBlobLocation'))]",
+    "assetsStorageAccountId": "[resourceId('ansiblekeys','Microsoft.Storage/storageAccounts', parameters('vaultAccountName'))]",
     "imageReference": {
             "publisher": "credativ",
             "offer": "Debian",
@@ -210,8 +211,6 @@
         "publisher": "Microsoft.OSTCExtensions",
         "type": "CustomScriptForLinux",
         "typeHandlerVersion": "1.2",
-        "storageAccountName": "[parameters('vaultAccountName')]",
-        "storageAccountKey": "[parameters('vaultAccountKey')]",
         "settings": {
           "fileUris": [
             "[variables('scriptUrlInstallAnsible')]",
@@ -219,6 +218,10 @@
             "[variables('pubBlobUrl')]"
           ],
           "commandToExecute": "[concat('bash deploy-via-ansible.sh ', parameters('numberOfNodes'), ' ', variables('vmNamePrefix'),' ', reference(variables('ansibleIPAddressID'),providers('Microsoft.Network','publicIPAddresses').apiVersions[0]).dnsSettings.fqdn,' ', parameters('adminUsername'))]"
+        },
+        "protectedSettings": {
+          "storageAccountName": "[parameters('vaultAccountName')]",
+          "storageAccountKey": "[listKeys(variables('assetsStorageAccountId'),'2015-05-01-preview').key1]"
         }
       }
     },
