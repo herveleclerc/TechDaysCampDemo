@@ -68,7 +68,7 @@ cp id_rsa /home/${sshu}/.ssh/id_rsa
 cp id_rsa.pub /home/${sshu}/.ssh/id_rsa.pub
 
 chmod 700 /home/${sshu}/.ssh
-chown -R $sshu: /home/${sshu}/.ssh
+chown -R ${sshu}: /home/${sshu}/.ssh
 chmod 400 /home/${sshu}/.ssh/id_rsa
 chmod 644 /home/${sshu}/.ssh/id_rsa.pub
 
