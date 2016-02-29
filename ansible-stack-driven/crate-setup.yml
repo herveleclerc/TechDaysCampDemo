@@ -1,0 +1,17 @@
+- hosts: "{{ target }}"
+  sudo: True
+  vars:
+    java_version: 8
+  roles:
+    - williamyeh.oracle-java
+
+  tasks:
+
+  - name: Install crate.io binaries
+    shell: 'bash -c "$(curl -L install.crate.io)"'
+
+  - name: move template to config dir
+    template: src=/tmp/crate.yml.j2 dest=/opt/crate/config/crate.yml force=yes mode="u=rw,g=r,o=r"
+
+  - name: start/restart service
+    service: name=crate state=restarted
