@@ -204,11 +204,11 @@
   "resources": [
     {
       "apiVersion": "[variables('apiVersion')]",
-      "name": "[parameters('lbName')]",
+      "name": "[variables('lbName')]",
       "type": "Microsoft.Network/loadBalancers",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('lbPublicIPAddressName'))]"
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('lbPublicIPAddressName'))]"
       ],
       "properties": {
         "frontendIPConfigurations": [
@@ -231,14 +231,14 @@
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-      "name": "[concat(parameters('lbName'), '/', 'CRATE-8200', copyIndex())]",
+      "name": "[concat(variables('lbName'), '/', 'CRATE-8200', copyIndex())]",
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "lbNatLoop",
-        "count": "[variables('numberOfNodes')]"
+        "count": "[parameters('numberOfNodes')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'))]"
+        "[concat('Microsoft.Network/loadBalancers/', variables('lbName'))]"
       ],
       "properties": {
         "frontendIPConfiguration": {
@@ -253,14 +253,14 @@
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-      "name": "[concat(parameters('lbName'), '/', 'CRATE-8300', copyIndex())]",
+      "name": "[concat(variables('lbName'), '/', 'CRATE-8300', copyIndex())]",
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "lbNatLoop2",
-        "count": "[variables('numberOfNodes')]"
+        "count": "[parameters('numberOfNodes')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'))]"
+        "[concat('Microsoft.Network/loadBalancers/', variables('lbName'))]"
       ],
       "properties": {
         "frontendIPConfiguration": {
@@ -364,7 +364,7 @@
       "properties": {
         "publicIPAllocationMethod": "[variables('lbPublicIPAddressType')]",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('vmNamePrefix')]"
+          "domainNameLabel": "[variables('vmNamePrefix')]"
         }
       }
     },
@@ -431,9 +431,9 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
-        "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'))]",
-        "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'), '/inboundNatRules/', 'CRATE-8200', copyIndex())]",
-        "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'), '/inboundNatRules/', 'CRATE-8300', copyIndex())]"
+        "[concat('Microsoft.Network/loadBalancers/', variables('lbName'))]",
+        "[concat('Microsoft.Network/loadBalancers/', variables('lbName'), '/inboundNatRules/', 'CRATE-8200', copyIndex())]",
+        "[concat('Microsoft.Network/loadBalancers/', variables('lbName'), '/inboundNatRules/', 'CRATE-8300', copyIndex())]"
       ],
       "properties": {
         "ipConfigurations": [
