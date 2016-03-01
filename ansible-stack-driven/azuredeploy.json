@@ -347,50 +347,6 @@
       }
     },
     {
-      "apiVersion": "[variables('apiVersion')]",
-      "name": "[concat('lbPrefix', copyindex())]",
-      "copy": {
-        "name": "lbLoop",
-        "count": "[parameters('numberOfNodes')]"
-      },
-      "type": "Microsoft.Network/loadBalancers",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', 'publicIP', copyindex() )]"
-      ],
-      "properties": {
-        "frontendIPConfigurations": [
-          {
-            "name": "[concat('loadBalancerFrontEnd', copyindex())]",
-            "properties": {
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIpAddresses', concat('publicIP', copyindex()))]"
-              }
-            }
-          }
-        ],
-        "backendAddressPools": [
-          {
-            "name": "[concat('loadBalancerBackEnd', copyindex())]"
-          }
-        ],
-        "inboundNatRules": [
-          {
-            "name": "CRATE-8200",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers',concat('lbPrefix', copyindex()) ),'/frontendIPConfigurations/', concat('loadBalancerFrontEnd', copyindex()) )]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 8200,
-              "backendPort": 8200,
-              "enableFloatingIP": false
-            }
-          }
-        ]
-      }
-    },
-    {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat('nic', copyindex())]",
       "copy": {
