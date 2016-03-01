@@ -356,7 +356,7 @@
       "type": "Microsoft.Network/loadBalancers",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIP'), copyindex())]"
+        "[concat('Microsoft.Network/publicIPAddresses/', 'publicIP', copyindex() )]"
       ],
       "properties": {
         "frontendIPConfigurations": [
@@ -399,7 +399,7 @@
       },
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', 'publicIP', copyindex())]",
+        "[concat('Microsoft.Network/publicIPAddresses/', 'publicIP', copyindex() )]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
       "apiVersion": "[variables('apiVersion')]",
