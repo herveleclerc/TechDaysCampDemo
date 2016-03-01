@@ -163,7 +163,7 @@
     "subnet1Prefix": "10.0.0.0/24",
     "vmNamePrefix": "awtecnode",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), variables('vmNamePrefix'))]",
-    "availabilitySet": "[variables('vmNamePrefix')]",
+    "availabilitySet": "[concat('av',variables('vmNamePrefix'))]",
     "faultDomainCount": "3",
     "updateDomainCount": "10",
     "publicIPAddressType": "Dynamic",
@@ -194,6 +194,7 @@
             "sku":"[parameters('debianOSVersion')]",
             "version": "latest"
     },
+    "lbDomainName": "[concat('lb',variables('vmNamePrefix'))]",
     "lbPublicIPAddressName": "viplb",
     "lbPublicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('lbPublicIPAddressName'))]",
     "lbName": "cratelb",
@@ -364,7 +365,7 @@
       "properties": {
         "publicIPAllocationMethod": "[variables('lbPublicIPAddressType')]",
         "dnsSettings": {
-          "domainNameLabel": "[variables('vmNamePrefix')]"
+          "domainNameLabel": "[variables('lbDomainName')]"
         }
       }
     },
