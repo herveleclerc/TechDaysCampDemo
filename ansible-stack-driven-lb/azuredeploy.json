@@ -227,9 +227,9 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-      "name": "[concat(parameters('lbName'), '/', 'CRATE-VM', copyIndex())]",
+      "name": "[concat(parameters('lbName'), '/', 'CRATE-8200', copyIndex())]",
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "lbNatLoop",
@@ -245,6 +245,28 @@
         "protocol": "tcp",
         "frontendPort": "[copyIndex(8200)]",
         "backendPort": 8200,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(parameters('lbName'), '/', 'CRATE-8300', copyIndex())]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "lbNatLoop2",
+        "count": "[variables('numberOfNodes')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'))]"
+      ],
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[variables('frontEndIPConfigID')]"
+        },
+        "protocol": "tcp",
+        "frontendPort": "[copyIndex(8300)]",
+        "backendPort": 8300,
         "enableFloatingIP": false
       }
     },
@@ -412,7 +434,8 @@
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
         "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'))]",
-        "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'), '/inboundNatRules/', 'CRATE-VM', copyIndex())]"
+        "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'), '/inboundNatRules/', 'CRATE-8200', copyIndex())]",
+        "[concat('Microsoft.Network/loadBalancers/', parameters('lbName'), '/inboundNatRules/', 'CRATE-8300', copyIndex())]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -430,7 +453,10 @@
               ],
               "loadBalancerInboundNatRules": [
                 {
-                  "id": "[concat(variables('lbID'),'/inboundNatRules/CRATE-VM', copyindex())]"
+                  "id": "[concat(variables('lbID'),'/inboundNatRules/CRATE-8200', copyindex())]"
+                },
+                {
+                  "id": "[concat(variables('lbID'),'/inboundNatRules/CRATE-8300', copyindex())]"
                 }
               ]
             }
