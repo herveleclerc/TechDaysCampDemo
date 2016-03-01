@@ -158,12 +158,15 @@
   "variables": {
     "apiVersion": "2015-06-15",
     "virtualNetworkName": "AnsVNET",
+    "lbPrefix": "cratelb",
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
     "vmNamePrefix": "awtecnode",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), variables('vmNamePrefix'))]",
     "availabilitySet": "[variables('vmNamePrefix')]",
+    "faultDomainCount": "3",
+    "updateDomainCount": "10",
     "publicIPAddressType": "Dynamic",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
@@ -258,7 +261,10 @@
       "name": "[variables('availabilitySet')]",
       "apiVersion": "[variables('apiVersion')]",
       "location": "[resourceGroup().location]",
-      "properties": {}
+      "properties": {
+        "PlatformFaultDomainCount": "[variables('faultDomainCount')]",
+        "PlatformUpdateDomainCount": "[variables('updateDomainCount')]"
+      }
     },
     {
       "type": "Microsoft.Network/publicIPAddresses",
@@ -335,6 +341,50 @@
             "name": "[variables('subnetDmzName')]",
             "properties": {
               "addressPrefix": "[variables('subnetDmzPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[concat('lbPrefix', copyindex())]",
+      "copy": {
+        "name": "lbLoop",
+        "count": "[parameters('numberOfNodes')]"
+      },
+      "type": "Microsoft.Network/loadBalancers",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIP'), copyindex())]"
+      ],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "[concat('loadBalancerFrontEnd', copyindex())]",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIpAddresses', concat('publicIP', copyindex()))]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "[concat('loadBalancerBackEnd', copyindex())]"
+          }
+        ],
+        "inboundNatRules": [
+          {
+            "name": "CRATE-8200",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers',concat('lbPrefix', copyindex()) ),'/frontendIPConfigurations/', concat('loadBalancerFrontEnd', copyindex()) )]"
+              },
+              "protocol": "tcp",
+              "frontendPort": 8200,
+              "backendPort": 8200,
+              "enableFloatingIP": false
             }
           }
         ]
@@ -428,10 +478,14 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', 'nic', copyindex())]"
+        "[concat('Microsoft.Network/networkInterfaces/', 'nic', copyindex())]",
+        "[concat('Microsoft.Compute/availabilitySets/', variables('availabilitySet'))]"
       ],
       "apiVersion": "[variables('apiVersion')]",
       "properties": {
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySet'))]"
+        },
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
