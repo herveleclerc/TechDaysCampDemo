@@ -152,17 +152,17 @@ pip install PyYAML jinja2 paramiko
 error_log "unable to install python packages via pip"
 
 
-log "Clone ansible repo..."
+log "Clone ansible repo..." "0"
 git clone https://github.com/ansible/ansible.git
 error_log "unable to clone ansible repo"
 
 cd ansible || error_log "unable to cd to ansible directory"
 
-log "Clone ansible submodules..."
+log "Clone ansible submodules..." "0"
 git submodule update --init --recursive
 error_log "unable to clone ansible submodules"
 
-log "Install ansible..."
+log "Install ansible..." "0"
 make install
 error_log "unable to install ansible"
 
@@ -190,7 +190,7 @@ printf  "[defaults]\nhost_key_checking = False\n\n" >> "${ANSIBLE_CONFIG_FILE}"
 echo  $'[ssh_connection]\ncontrol_path = ~/.ssh/ansible-%%h-%%r' >> "${ANSIBLE_CONFIG_FILE}"   
 
 mess=$(ansible cluster -m ping)
-log "$mess" "1"
+log "$mess" "0"
 
 
 log "Create crate.yml template" "0"
