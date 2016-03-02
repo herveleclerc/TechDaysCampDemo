@@ -456,7 +456,8 @@
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
         "[concat('Microsoft.Network/loadBalancers/', variables('lbName'))]",
         "[concat('Microsoft.Network/loadBalancers/', variables('lbName'), '/inboundNatRules/', 'CRATE-820', copyIndex())]",
-        "[concat('Microsoft.Network/loadBalancers/', variables('lbName'), '/inboundNatRules/', 'CRATE-830', copyIndex())]"
+        "[concat('Microsoft.Network/loadBalancers/', variables('lbName'), '/inboundNatRules/', 'CRATE-830', copyIndex())]",
+        "[concat('Microsoft.Network/loadBalancers/', variables('lbName'), '/inboundNatRules/', 'SSH-220', copyIndex())]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -478,7 +479,7 @@
                 },
                 {
                   "id": "[concat(variables('lbID'),'/inboundNatRules/CRATE-830', copyindex())]"
-                }
+                },
                 {
                   "id": "[concat(variables('lbID'),'/inboundNatRules/SSH-220', copyindex())]"
                 }
