@@ -138,7 +138,7 @@ done
 
 # install Ansible (in a loop because a lot of installs happen
 # on VM init, so won't be able to grab the dpkg lock immediately)
-log "Install ansible required packets..." "0"
+log "Install ansible required packages..." "0"
 
 until apt-get -y update && apt-get -y install python-pip python-dev git 
 do
@@ -203,6 +203,8 @@ do
 done
 error_log "unable to create crate config file content"
 
+
+cd .. || error_log "unable to back with cd .."
 
 log "Download ansible galaxy roles" "0"
 log "  - java" "0"
