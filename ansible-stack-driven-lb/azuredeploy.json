@@ -316,7 +316,7 @@
             "[variables('pubBlobUrl')]",
             "[variables('playBlobUrl')]"
           ],
-          "commandToExecute": "[concat('bash deploy-via-ansible.sh ', parameters('numberOfNodes'), ' ', variables('vmNamePrefix'),' ', reference(variables('ansibleIPAddressID'),providers('Microsoft.Network','publicIPAddresses').apiVersions[0]).dnsSettings.fqdn,' ', parameters('adminUsername'))]"
+          "commandToExecute": "[concat('bash deploy-via-ansible.sh ', parameters('numberOfNodes'), ' ', variables('vmNamePrefix'),' ', reference(variables('ansibleIPAddressID'),providers('Microsoft.Network','publicIPAddresses').apiVersions[0]).dnsSettings.fqdn,' ', parameters('adminUsername'), ' ', reference(variables('lbPublicIPAddressID'),providers('Microsoft.Network','publicIPAddresses').apiVersions[0]).dnsSettings.fqdn)]"
         },
         "protectedSettings": {
           "storageAccountName": "[parameters('vaultAccountName')]",
@@ -478,6 +478,9 @@
                 },
                 {
                   "id": "[concat(variables('lbID'),'/inboundNatRules/CRATE-830', copyindex())]"
+                }
+                {
+                  "id": "[concat(variables('lbID'),'/inboundNatRules/SSH-220', copyindex())]"
                 }
               ]
             }

@@ -23,6 +23,8 @@ numberOfNodes=$1
 vmNamePrefix=$2
 ansiblefqdn=$3
 sshu=$4
+viplb=$5
+
 FACTS=/etc/ansible/facts
 export FACTS
 
@@ -96,7 +98,7 @@ let numberOfNodes=$numberOfNodes-1
 for i in $(seq 0 $numberOfNodes)
 do
 	# log "trying to su - devops -c ssh -l ${sshu} ${vmNamePrefix}${i}.${tld} cat $FACTS/private-ip.fact"
-	su - devops -c "ssh -p 220${i} -l ${sshu} ${vmNamePrefix}${i}.${tld} cat $FACTS/private-ip.fact" >> /tmp/hosts.inv 
+	su - devops -c "ssh -p 220${i} -l ${sshu} ${viplb} cat $FACTS/private-ip.fact" >> /tmp/hosts.inv 
 done
 
 
