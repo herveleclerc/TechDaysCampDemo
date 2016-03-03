@@ -246,7 +246,7 @@
           "id": "[variables('frontEndIPConfigID')]"
         },
         "protocol": "tcp",
-        "frontendPort": "[copyIndex(8200)]",
+        "frontendPort": "[copyIndex(4200)]",
         "backendPort": 4200,
         "enableFloatingIP": false
       }
@@ -268,7 +268,7 @@
           "id": "[variables('frontEndIPConfigID')]"
         },
         "protocol": "tcp",
-        "frontendPort": "[copyIndex(8300)]",
+        "frontendPort": "[copyIndex(4300)]",
         "backendPort": 4300,
         "enableFloatingIP": false
       }
