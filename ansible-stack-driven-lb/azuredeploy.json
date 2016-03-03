@@ -26,6 +26,13 @@
         "description": "Location of resources"
       }
     },
+    "vmSuffix": {
+      "type": "string",
+      "defaultValue": "techdays",
+      "metadata": {
+        "description": "Suffix of the vms, and load balancers"
+      }
+    },
     "newStorageAccountName": {
       "type": "string",
       "defaultValue": "awansibledrive",
@@ -35,7 +42,7 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_A1",
+      "defaultValue": "Standard_A0",
       "allowedValues": [
 	 	  "Standard_A0",
 		  "Standard_A1",
@@ -130,7 +137,7 @@
       "type": "string",
       "defaultValue": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy.sh",
       "metadata": {
-        "description": "Deploy/SetUp script url."
+        "description": "Deploy/SetUp script url for ansible control vm"
       }
     },
     "commandToExecute": {
@@ -161,7 +168,7 @@
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
-    "vmNamePrefix": "awtecnode",
+    "vmNamePrefix": "[concat('aw',variables('vmNamePrefix'))]",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), variables('vmNamePrefix'))]",
     "availabilitySet": "[concat('av',variables('vmNamePrefix'))]",
     "faultDomainCount": "3",
