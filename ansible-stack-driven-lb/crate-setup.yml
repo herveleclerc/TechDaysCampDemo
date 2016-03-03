@@ -13,7 +13,6 @@
       - curl
       - apt-transport-https
 
-
   - name: get crate apt-key
     apt_key: url="https://cdn.crate.io/downloads/apt/DEB-GPG-KEY-crate"
 

@@ -183,7 +183,6 @@ done
 error_log "unable to create hosts file entries to /etc/ansible"
 
 
-
 # Accept ssh keys by default    
 printf  "[defaults]\nhost_key_checking = False\n\n" >> "${ANSIBLE_CONFIG_FILE}"   
 # Shorten the ControlPath to avoid errors with long host names , long user names or deeply nested home directories
