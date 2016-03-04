@@ -28,8 +28,8 @@ function log()
 
 function install_ansible()
 {
-
-  until apt-get -y update && apt-get -y install python-pip python-dev git 
+  log "Installing Ansible from repo ..." "0"
+  until apt-get -y update && apt-get -y install python-pip python-dev git htop stress
   do
     log "Lock detected on VM init Try again..." "0"
     sleep 2
@@ -70,6 +70,8 @@ function install_ansible()
   printf "[local]\nlocalhost ansible_connection=local\n\n" >> ${ANSIBLE_HOST_FILE}
 
   cd $CWD
+
+  log "Installing Ansible from repo done !" "0"
 }
 
 function write_fact()
@@ -88,6 +90,8 @@ function install_curl()
     log "Lock detected on VM init Try again..." "0"
     sleep 2
   done
+  log "Installing curl done !" "0"
+  log ":rocket:INSTALLING CRATE CLUSTER ON VM SCALESET (VMSS)"
 }
 
 function create_crate_config()
@@ -97,16 +101,19 @@ function create_crate_config()
   echo "discovery.zen.ping.multicast.enabled: false" >> "${CRATE_TPL}"
   echo "discovery.zen.ping.unicast.hosts:"           >> "${CRATE_TPL}"
   
-  for i in $(seq 0 $numberOfNodes)
+  let num=$numberOfNodes-1
+  for i in $(seq 0 $num)
   do
   	  let j=4+$i
-      echo "- 10.0.0.$i:4300"                        >> "${CRATE_TPL}"
+      echo "- 10.0.0.$j:4300"                        >> "${CRATE_TPL}"
   done
   error_log "unable to create crate config file content"
+  log "Create crate.yml template done !" "0"
 }
 
 function deploy_crate()
 {
+  log "Deploying crate ..." "0"
   cd $CWD
   log "Download ansible galaxy roles" "0"
   log "  - java" "0"
