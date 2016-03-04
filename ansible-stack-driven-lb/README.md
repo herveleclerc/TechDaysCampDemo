@@ -7,7 +7,7 @@ After installation cluster will be reachable on :
 for exemple :  
 - http://lbawtecnode.northeurope.cloudapp.azure.com:4200/  
 or  
-- http://lbawtecnode.northeurope.cloudapp.azure.com:8201/  
+- http://lbawtecnode.northeurope.cloudapp.azure.com:4201/  
   
 - the fqdn depends on the choice you've made in the parameter's screen.
 
