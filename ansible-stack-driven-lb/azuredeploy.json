@@ -337,7 +337,7 @@
       "apiVersion": "[variables('apiVersion')]",
       "location": "[parameters('location')]",
       "copy": {
-        "name": "extensionLoop1",
+        "name": "extensionLoop",
         "count": "[parameters('numberOfNodes')]"
       },
       "dependsOn": [
