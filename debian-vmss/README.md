@@ -28,4 +28,6 @@ The Autoscale rules are configured as follows
 
 
 ### Access to vm
-from port 50000 to 50099
+ssh   from port 50000 to 50099
+crate from port 4200  to 4299
+
