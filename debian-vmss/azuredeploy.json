@@ -359,9 +359,10 @@
                   "autoUpgradeMinorVersion":true,
                   "settings":{
                     "fileUris":[
-                      "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/deploy.sh"
+                      "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/deploy.sh",
+                      "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/crate-setup.yml"
                     ],  
-                    "commandToExecute": "[concat('bash deploy.sh ',  reference(variables('nicName')).ipConfigurations[0].properties.privateIPAddress, ' ', parameters('instanceCount'))]"
+                    "commandToExecute": "[concat('bash deploy.sh ', 'unknown', ' ', parameters('instanceCount'))]"
                   }
                 }
               },
