@@ -168,7 +168,7 @@
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
-    "vmNamePrefix": "[concat('aw',variables('vmNamePrefix'))]",
+    "vmNamePrefix": "[concat('aw',variables('vmSuffix'))]",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), variables('vmNamePrefix'))]",
     "availabilitySet": "[concat('av',variables('vmNamePrefix'))]",
     "faultDomainCount": "3",
