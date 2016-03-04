@@ -25,3 +25,29 @@ you must put a id_rsa and id_rsa.pub files in keys, crate-setup.yml, crate.yml i
 <a href="http://armviz.io/#/?load=https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven-lb/azuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
+
+
+    ┌─────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    │                                                                                                     │
+    │                                                                                                     │
+    │                                                                                                     │
+    │                                                                                                     │
+    │                          ┌──────────────────────────────────────────┐                               │
+    │                          │lbawtecnode.northeurop─.cloudapp.azure.com│                               │
+    │                          └──────────────────────────────────────────┘                               │
+    │                          ┌───────────────────┐  ┌───────────────────┐                               │
+    │                          │ VM # 1: scale.io  │  │ VM #2 : scale.io  │                               │
+    │                          └───────────────────┘  └───────────────────┘                               │
+    │┌───────────────────┐               ▲                      ▲                                         │
+    ││ansible vault :    │               └──────────────────────┴────────────────────────────┐            │
+    ││(storage account)  │                                                                   ▼            │
+    ││Private Blob :     │                                                         ┌───────────────────┐  │
+    ││- keys             │ ◀────────────────Script VMExtension────────────────────▶│  VM # : ansible   │  │
+    ││- playbooks        │                                                         └───────────────────┘  │
+    ││- scripts          │                                                                                │
+    │└───────────────────┘                                                                                │
+    │                                                                                                     │
+    │                                                                                                     │
+    │                                                                                                     │
+    │                                           Resource Group                                            │
+    └─────────────────────────────────────────────────────────────────────────────────────────────────────┘
