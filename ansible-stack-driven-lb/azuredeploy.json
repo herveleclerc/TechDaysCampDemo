@@ -135,7 +135,7 @@
     },
     "fileUris": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy.sh",
+      "defaultValue": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven-lb/deploy.sh",
       "metadata": {
         "description": "Deploy/SetUp script url for ansible control vm"
       }
@@ -337,7 +337,7 @@
       "apiVersion": "[variables('apiVersion')]",
       "location": "[parameters('location')]",
       "copy": {
-        "name": "extensionLoop",
+        "name": "extensionLoop1",
         "count": "[parameters('numberOfNodes')]"
       },
       "dependsOn": [

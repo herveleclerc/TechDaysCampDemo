@@ -27,7 +27,7 @@
       "value": "8"
     },
     "fileUris": {
-      "value": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven/deploy.sh"
+      "value": "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ansible-stack-driven-lb/deploy.sh"
     },
     "commandToExecute": {
       "value": "bash deploy.sh"
