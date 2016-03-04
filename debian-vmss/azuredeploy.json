@@ -28,7 +28,7 @@
     },
     "vmSku":{
       "type":"string",
-      "defaultValue":"Standard_A1",
+      "defaultValue":"Standard_A0",
       "metadata":{
         "description":"Size of VMs in the VM Scale Set."
       }
@@ -101,6 +101,7 @@
     "natStartPort":50000,
     "natEndPort":50099,
     "natBackendPort":22,
+    
     "nicName":"[concat(parameters('vmssName'), 'nic')]",
     "ipConfigName":"[concat(parameters('vmssName'), 'ipconfig')]",
     "frontEndIPConfigID":"[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontEnd')]",

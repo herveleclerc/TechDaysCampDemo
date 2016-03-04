@@ -341,7 +341,8 @@
         "count": "[parameters('numberOfNodes')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmNamePrefix'), copyIndex())]"
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmNamePrefix'), copyIndex())]",
+        "vmLoop"
       ],
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
