@@ -238,7 +238,7 @@
             "name": "[variables('natCratePoolName')]",
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[variables('frontEndIPConfigurationsID')]"
+                "id": "[variables('frontEndIPConfigID')]"
               },
               "protocol": "tcp",
               "frontendPortRangeStart": "[variables('natCrateStartPort')]",
