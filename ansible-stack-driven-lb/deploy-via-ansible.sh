@@ -21,7 +21,7 @@ function log()
 
 	url="https://rocket.alterway.fr/hooks/44vAPspqqtD7Jtmtv/k4Tw89EoXiT5GpniG/HaxMfijFFi5v1YTEN68DOe5fzFBBxB4YeTQz6w3khFE%3D"
 	payload="payload={\"icon_emoji\":\":cloud:\",\"text\":\"$mess\"}"
-  curl -X POST --data-urlencode "$payload" "$url"
+  curl -s -X POST --data-urlencode "$payload" "$url" > /dev/null 2>&1
     
   echo "$(date) : $1"
 }
@@ -153,6 +153,9 @@ error_log "unable to install python packages via pip"
 
 
 log "Clone ansible repo..." "0"
+rm -rf ansible
+error_log "unable to remove ansible directory"
+
 git clone https://github.com/ansible/ansible.git
 error_log "unable to clone ansible repo"
 
@@ -167,7 +170,9 @@ make install
 error_log "unable to install ansible"
 
 log "Generate ansible files..." "0"
-mkdir /etc/ansible
+rm -rf /etc/ansible
+error_log "unable to remove /etc/ansible directory"
+mkdir -p /etc/ansible
 error_log "unable to create /etc/ansible directory"
 
 cp examples/hosts /etc/ansible/.
@@ -207,11 +212,26 @@ cd .. || error_log "unable to back with cd .."
 
 log "Download ansible galaxy roles" "0"
 log "  - java" "0"
-ansible-galaxy install williamyeh.oracle-java -p .
+#ansible-galaxy install williamyeh.oracle-java -p .
+#ansible-galaxy install smola.java -p .
+
+rm -rf smola.java
+error_log "unable to remove smola.java role"
+
+rm -rf ansible-java-role
+error_log "unable to remove ansible-java-role role"
+
+ansible-galaxy install -p . git+https://github.com/smola/ansible-java-role
 error_log "unable to galaxy java"
+
+mv ansible-java-role smola.java
+error_log "unable to rename role"
+
 
 log "Playing playbook" "0"
 ansible-playbook crate-setup.yml --extra-vars "target=cluster"
 error_log "playbook crate had errors"
 
 log "End Installation On Azure" "0"
+log "you can use admin page on http://${viplb}:4200 or http://${viplb}:4201"
+

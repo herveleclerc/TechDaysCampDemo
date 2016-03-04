@@ -1,9 +1,10 @@
 - hosts: "{{ target }}"
   sudo: True
   vars:
-    java_version: 8
+    java_packages:
+      - oracle-java8-installer
   roles:
-    - williamyeh.oracle-java
+    - smola.java
 
   tasks:
 
