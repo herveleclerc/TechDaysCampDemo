@@ -53,7 +53,7 @@
     },
     "instanceCount":{
       "type":"int",
-      "defaultValue":"5",
+      "defaultValue":"2",
       "metadata":{
         "description":"Number of VM instances (100 or less)."
       },
@@ -101,7 +101,11 @@
     "natStartPort":50000,
     "natEndPort":50099,
     "natBackendPort":22,
-    
+    "natCratePoolName": "[concat(variables('loadBalancerName'), 'natCrate')]",
+    "natCratePoolID": "[concat(variables('lbID'),'/inboundNatPools/',variables('natCratePoolName'))]",
+    "natCrateStartPort":4200,
+    "natCrateEndPort":4299,
+    "natCrateBackendPort":4200,
     "nicName":"[concat(parameters('vmssName'), 'nic')]",
     "ipConfigName":"[concat(parameters('vmssName'), 'ipconfig')]",
     "frontEndIPConfigID":"[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontEnd')]",
@@ -229,6 +233,18 @@
         ],
         "inboundNatPools":[
           {
+            "name": "[variables('natCratePoolName')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('frontEndIPConfigurationsID')]"
+              },
+              "protocol": "tcp",
+              "frontendPortRangeStart": "[variables('natCrateStartPort')]",
+              "frontendPortRangeEnd": "[variables('natCrateEndPort')]",
+              "backendPort": "[variables('natCrateBackendPort')]"
+            }
+          },
+          {
             "name":"[variables('natPoolName')]",
             "properties":{
               "frontendIPConfiguration":{
@@ -318,6 +334,9 @@
                         "loadBalancerInboundNatPools":[
                           {
                             "id":"[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/loadBalancers/', variables('loadBalancerName'), '/inboundNatPools/', variables('natPoolName'))]"
+                          },
+                          {
+                            "id": "[variables('natCratePoolID')]"
                           }
                         ]
                       }
@@ -338,10 +357,9 @@
                   "autoUpgradeMinorVersion":true,
                   "settings":{
                     "fileUris":[
-                      "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/deploy.sh",
-                      "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/docker.sh"
+                      "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/deploy.sh"
                     ],  
-                    "commandToExecute": "[concat('bash deploy.sh ',  reference(variables('nicName')).ipConfigurations[0].properties.privateIPAddress)]"
+                    "commandToExecute": "[concat('bash deploy.sh ',  reference(variables('nicName')).ipConfigurations[0].properties.privateIPAddress, ' ', parameters('instanceCount'))]"
                   }
                 }
               },

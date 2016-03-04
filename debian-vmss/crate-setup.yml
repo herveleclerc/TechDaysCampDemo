@@ -1,0 +1,36 @@
+- hosts: "{{ target }}"
+  sudo: True
+  vars:
+    java_packages:
+      - oracle-java8-installer
+  roles:
+    - smola.java
+
+  tasks:
+
+  - name: install missing package if needed
+    apt: name={{ item }} update_cache=yes
+    with_items:
+      - curl
+      - apt-transport-https
+
+  - name: get crate apt-key
+    apt_key: url="https://cdn.crate.io/downloads/apt/DEB-GPG-KEY-crate"
+
+  - name: add crate repository
+    apt_repository: mode=420 repo="deb https://cdn.crate.io/downloads/apt/stable/ jessie main" state=present update_cache=yes validate_certs=no
+    
+
+  - name: Install crate.io packages
+    apt: name={{ item }} update_cache=yes
+    with_items:
+      - crate
+
+  - name: move template to config dir
+    template: src=/tmp/crate.yml.j2 
+              dest=/etc/crate/crate.yml 
+              force=yes 
+              mode="u=rw,g=r,o=r"
+
+  - name: start/restart service
+    service: name=crate state=restarted
