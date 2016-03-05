@@ -368,9 +368,6 @@
               },
               {
                 "name": "LinuxDiagnostic",
-                "dependsOn": [
-                  "lapextension"
-                ],
                 "properties": {
                   "publisher": "Microsoft.OSTCExtensions",
                   "type": "LinuxDiagnostic",

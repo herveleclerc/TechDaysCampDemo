@@ -1,5 +1,10 @@
 #!/bin/bash
 
+narco()
+{
+  sleep $1
+}
+
 error_log()
 {
     if [ "$?" != "0" ]; then
@@ -13,6 +18,10 @@ function log()
 {
 	
   x=":ok:"
+
+  if [ "x$2" = "x" ]; then
+    x=":question:"
+  fi
 
   if [ "$2" != "0" ]; then
     x=":hankey:"
@@ -155,6 +164,7 @@ ANSIBLE_CONFIG_FILE=/etc/ansible/ansible.cfg
 CRATE_TPL="/tmp/crate.yml.j2"
 
 ## deploy start here
+narco 180
 write_fact
 install_curl
 create_crate_config
