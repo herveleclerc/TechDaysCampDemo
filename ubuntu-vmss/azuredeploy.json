@@ -2,18 +2,6 @@
   "$schema":"http://schema.management.azure.com/schemas/2015-01-01-preview/deploymentTemplate.json",
   "contentVersion":"1.0.0.0",
   "parameters":{
-    "workspaceId": {
-      "type": "string",
-      "metadata": {
-        "description": "workspace id"
-      }
-    },
-    "workspaceKey": {
-      "type": "string",
-      "metadata": {
-        "description": "workspace key"
-      }
-    },
     "resourceLocation":{
       "type":"string",
       "defaultValue":"North Europe",
@@ -139,6 +127,20 @@
       "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4pucOaPkE1/U+TmarD0+0OfBt7zHa0vC+PJlJD0ka59UIm2kzsvFZlIDyHMils/1f4lgvVX/R7jXT8pTXRj79T7u4jyq2o2JAtx2FNuawJyD6GBRzburuwJkdCEYnJWEiiARS6ivnvZUVrHtGd+c29xNuDb6IqYVWkeMGf4RQ3S5M+jG+W3Yf8XK7OcipNYJtExbKY5/M1AykNSggxuwsd443uyr+bCWB2g+YV1HnuUS+DxptZMh5tFT3rQyzshKMjWvZY64aAh+54Yok8aQhWsKFAw1s9ZhxJ9cTg5X4eUgiPP2LYX7MxTagyFdlqd8MbKYQF0qhzgCy2TfH/GhV hleclerc@machl.home",
       "metadata": {
         "description": "SSH rsa public key file as a string."
+      }
+    },
+    "workspaceId": {
+      "type": "string",
+      "defaultValue":"dc02a84b-d590-4e98-9412-be36fa1bc970",
+      "metadata": {
+        "description": "workspace id"
+      }
+    },
+    "workspaceKey": {
+      "type": "string",
+      "defaultValue":"Trbly25JDtkEO01HwZBIvlFm2hios2CUSSIDpPaj9Hj1dv3ADIwlzJN/UEf0fXrysS2Zd1YZphWnDrVmIjF6uQ==",
+      "metadata": {
+        "description": "workspace key"
       }
     }
   },
