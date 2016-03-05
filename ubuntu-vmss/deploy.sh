@@ -146,6 +146,7 @@ function deploy_crate()
   ansible-playbook crate-setup.yml --extra-vars "target=local"
   error_log "playbook crate had errors"
 
+  log ":rocket:INSTALLING CRATE CLUSTER ON VM SCALESET (VMSS) DONE !" "0"
   log "End Installation On Azure" "0"
 }
 
@@ -164,9 +165,9 @@ ANSIBLE_CONFIG_FILE=/etc/ansible/ansible.cfg
 CRATE_TPL="/tmp/crate.yml.j2"
 
 ## deploy start here
-# narco 180
-write_fact
-install_curl
-create_crate_config
-install_ansible
-deploy_crate
+#narco 180
+#write_fact
+#install_curl
+#create_crate_config
+#install_ansible
+#deploy_crate

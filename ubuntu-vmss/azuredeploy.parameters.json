@@ -9,7 +9,7 @@
       "value": "Standard_A0"
     },
     "ubuntuOSVersion": {
-      "value": "15.10"
+      "value": "14.04.4-LTS"
     },
     "vmssName": {
       "value": "GEN-UNIQUE"
