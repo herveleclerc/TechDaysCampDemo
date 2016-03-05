@@ -2,7 +2,19 @@
 
 narco()
 {
-  sleep $1
+  j=0
+  while true ; do 
+    mdsdins=$(pgrep -c mdsd)
+    if [ "$mdsdins" = "0" ]; then
+      sleep 10
+    else
+      break
+    fi
+    let j=$j+10
+    if [ "$j" = "300" ]; then
+      break
+    fi
+  done
 }
 
 error_log()
@@ -165,9 +177,10 @@ ANSIBLE_CONFIG_FILE=/etc/ansible/ansible.cfg
 CRATE_TPL="/tmp/crate.yml.j2"
 
 ## deploy start here
-#narco 180
-#write_fact
-#install_curl
-#create_crate_config
-#install_ansible
-#deploy_crate
+
+narco 300
+write_fact
+install_curl
+create_crate_config
+install_ansible
+deploy_crate

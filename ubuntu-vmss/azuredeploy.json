@@ -89,7 +89,7 @@
     },
     "ubuntuOSVersion":{
       "type":"string",
-      "defaultValue":"15.10",
+      "defaultValue":"14.04.4-LTS",
       "allowedValues":[
         "14.04.4-LTS",
         "15.10",
