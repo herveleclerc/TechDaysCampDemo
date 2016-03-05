@@ -28,8 +28,10 @@ The Autoscale rules are configured as follows
 
 
 ### Access to vm
-ssh   from port 50000 to 50099
-crate from port 4200  to 4299
+- ssh   from port 50000 to 50099  
+- crate from port 4200  to 4299  
 
+To browse crate admin portal http://[vmssprefix].[region].cloudapp.azure.com:4200/4299  
+eg :  http://techznode.northeurope.cloudapp.azure.com:4200/admin/  
 
 UBUNTU Version  

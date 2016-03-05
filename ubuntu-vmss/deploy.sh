@@ -38,7 +38,7 @@ function log()
   if [ "$2" != "0" ]; then
     x=":hankey:"
   fi
-  mess="$(hostname): $x $1"
+  mess="$(date) - $(hostname): $1 $x"
 
   url="https://rocket.alterway.fr/hooks/44vAPspqqtD7Jtmtv/k4Tw89EoXiT5GpniG/HaxMfijFFi5v1YTEN68DOe5fzFBBxB4YeTQz6w3khFE%3D"
   payload="payload={\"icon_emoji\":\":cloud:\",\"text\":\"$mess\"}"
@@ -52,7 +52,7 @@ function install_ansible()
   log "Installing Ansible from repo ..." "0"
   until apt-get -y update && apt-get -y install python-pip python-dev git htop stress 
   do
-    log "Lock detected on VM init Try again..." "0"
+    log "Lock detected on VM init try again..." "0"
     sleep 2
   done
   error_log "unable to get system packages"
@@ -161,7 +161,7 @@ function deploy_crate()
   ansible-playbook crate-setup.yml --extra-vars "target=local"
   error_log "playbook crate had errors"
 
-  log ":rocket:INSTALLING CRATE CLUSTER ON VM SCALESET (VMSS) DONE !" "0"
+  log ":rocket:INSTALLING CRATE CLUSTER ON VM SCALESET (VMSS) *DONE* !" "0"
   log "End Installation On Azure" "0"
 }
 
