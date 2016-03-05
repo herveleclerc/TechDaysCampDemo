@@ -201,6 +201,7 @@ log "Create crate.yml template" "0"
 echo "cluster.name: techdayscamp2016"              >  "${CRATE_TPL}"
 echo "discovery.zen.ping.multicast.enabled: false" >> "${CRATE_TPL}"
 echo "discovery.zen.ping.unicast.hosts:"           >> "${CRATE_TPL}"
+echo "discovery.zen.minimum_master_nodes: 2"       >> "${CRATE_TPL}"
 for i in $(cat /tmp/hosts.inv)
 do
   echo "- $i:4300"                                 >> "${CRATE_TPL}"

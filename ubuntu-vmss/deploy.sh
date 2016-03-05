@@ -29,7 +29,7 @@ function log()
 function install_ansible()
 {
   log "Installing Ansible from repo ..." "0"
-  until apt-get -y update && apt-get -y install python-pip python-dev git htop stress libssl1.0.0 libssl-dev
+  until apt-get -y update && apt-get -y install python-pip python-dev git htop stress 
   do
     log "Lock detected on VM init Try again..." "0"
     sleep 2
@@ -98,6 +98,7 @@ function create_crate_config()
 {
   log "Create crate.yml template" "0"
   echo "cluster.name: techdayscamp2016"              >  "${CRATE_TPL}"
+  echo "discovery.zen.minimum_master_nodes: 2"       >> "${CRATE_TPL}"
   echo "discovery.zen.ping.multicast.enabled: false" >> "${CRATE_TPL}"
   echo "discovery.zen.ping.unicast.hosts:"           >> "${CRATE_TPL}"
   

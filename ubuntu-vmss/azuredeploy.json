@@ -35,10 +35,11 @@
     },
     "debianOSVersion":{
       "type":"string",
-      "defaultValue":"8",
+      "defaultValue":"15.10",
       "allowedValues":[
-        "8",
-        "7"
+        "14.04",
+        "15.10",
+        "16.04"
       ],
       "metadata":{
         "description":"The Debian version for the VM. This will pick a fully patched image of this given Debian version. Allowed values are: 15.10, 14.04.2-LTS."
@@ -46,7 +47,7 @@
     },
     "vmssName":{
       "type":"string",
-      "defaultValue": "technode",
+      "defaultValue": "techunode",
       "metadata":{
         "description":"String used as a base for naming resources (9 characters or less). A hash is prepended to this string for some resources, and resource-specific information is appended."
       },
@@ -123,8 +124,8 @@
     "wadmetricsresourceid": "[concat('/subscriptions/',subscription().subscriptionId,'/resourceGroups/',resourceGroup().name ,'/providers/','Microsoft.Compute/virtualMachineScaleSets/',parameters('vmssName'))]",
     "wadcfgxend": "[concat('\"><MetricAggregation scheduledTransferPeriod=\"PT1H\"/><MetricAggregation scheduledTransferPeriod=\"PT1M\"/></Metrics></DiagnosticMonitorConfiguration></WadCfg>')]",
     "osType":{
-      "publisher":"credativ",
-      "offer":"Debian",
+      "publisher":"Canonical",
+      "offer":"UbuntuServer",
       "sku":"[parameters('debianOSVersion')]",
       "version":"latest"
     },
@@ -359,8 +360,8 @@
                   "autoUpgradeMinorVersion":true,
                   "settings":{
                     "fileUris":[
-                      "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/deploy.sh",
-                      "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/debian-vmss/crate-setup.yml"
+                      "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ubuntu-vmss/deploy.sh",
+                      "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ubuntu-vmss/crate-setup.yml"
                     ],  
                     "commandToExecute": "[concat('bash deploy.sh ', 'unknown', ' ', parameters('instanceCount'))]"
                   }
