@@ -31,3 +31,5 @@ The Autoscale rules are configured as follows
 ssh   from port 50000 to 50099
 crate from port 4200  to 4299
 
+
+UBUNTU Version  
