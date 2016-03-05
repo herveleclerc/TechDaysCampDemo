@@ -2,6 +2,18 @@
   "$schema":"http://schema.management.azure.com/schemas/2015-01-01-preview/deploymentTemplate.json",
   "contentVersion":"1.0.0.0",
   "parameters":{
+    "workspaceId": {
+      "type": "string",
+      "metadata": {
+        "description": "workspace id"
+      }
+    },
+    "workspaceKey": {
+      "type": "string",
+      "metadata": {
+        "description": "workspace key"
+      }
+    },
     "resourceLocation":{
       "type":"string",
       "defaultValue":"North Europe",
@@ -438,6 +450,21 @@
                     "storageAccountEndPoint": "https://core.windows.net"
                   }
                 }
+              },
+              {
+                "name": "OMS",
+                "properties": {
+                  "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+                  "type": "OmsAgentForLinux",
+                  "typeHandlerVersion": "1.0",
+                  "autoUpgradeMinorVersion": true,
+                  "settings": {
+                     "workspaceId": "[parameters('workspaceId')]"
+                  },
+                  "protectedSettings": {
+                    "workspaceKey": "[parameters('workspaceKey')]"
+                  }
+                }
               }
             ]
           }
@@ -460,9 +487,9 @@
           {
             "name": "Profile1",
             "capacity": {
-              "minimum": "1",
+              "minimum": "2",
               "maximum": "10",
-              "default": "1"
+              "default": "2"
             },
             "rules": [
               {
@@ -480,7 +507,7 @@
                 "scaleAction": {
                   "direction": "Increase",
                   "type": "ChangeCount",
-                  "value": "1",
+                  "value": "2",
                   "cooldown": "PT1M"
                 }
               },
@@ -494,7 +521,7 @@
                   "timeWindow":"PT5M",
                   "timeAggregation":"Average",
                   "operator":"LessThan",
-                  "threshold":30.0
+                  "threshold":20.0
                 },
                 "scaleAction":{
                   "direction":"Decrease",
