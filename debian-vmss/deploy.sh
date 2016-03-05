@@ -68,7 +68,7 @@ function install_ansible()
   error_log "unable to copy hosts file to /etc/ansible"
 
   printf "[local]\nlocalhost ansible_connection=local\n\n" >> ${ANSIBLE_HOST_FILE}
-  printf "deprecation_warnings=False\n\n"                  >> ${ANSIBLE_CONFIG_FILE}
+  printf "[defaults]\ndeprecation_warnings=False\n\n"      >> ${ANSIBLE_CONFIG_FILE}
 
   cd $CWD
 
