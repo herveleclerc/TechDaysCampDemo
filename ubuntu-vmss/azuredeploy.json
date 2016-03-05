@@ -369,11 +369,14 @@
               },
               {
                 "name": "LinuxDiagnostic",
+                "dependsOn": [
+                  "lapextension"
+                ],
                 "properties": {
                   "publisher": "Microsoft.OSTCExtensions",
                   "type": "LinuxDiagnostic",
-                  "typeHandlerVersion": "2.2",
-                  "autoUpgradeMinorVersion": true,
+                  "typeHandlerVersion": "2.1",
+                  "autoUpgradeMinorVersion": false,
                   "settings": {
                     "xmlCfg": "[base64(concat(variables('wadcfgxstart'),variables('wadmetricsresourceid'),variables('wadcfgxend')))]",
                     "storageAccount": "[variables('diagnosticsStorageAccountName')]"

@@ -68,6 +68,7 @@ function install_ansible()
   error_log "unable to copy hosts file to /etc/ansible"
 
   printf "[local]\nlocalhost ansible_connection=local\n\n" >> ${ANSIBLE_HOST_FILE}
+  printf "deprecation_warnings=False\n\n"                  >> ${ANSIBLE_CONFIG_FILE}
 
   cd $CWD
 
@@ -91,7 +92,7 @@ function install_curl()
     sleep 2
   done
   log "Installing curl done !" "0"
-  log ":rocket:INSTALLING CRATE CLUSTER ON VM SCALESET (VMSS)"
+  log ":rocket:INSTALLING CRATE CLUSTER ON VM SCALESET (VMSS)" "0"
 }
 
 function create_crate_config()

@@ -178,7 +178,8 @@ error_log "unable to create /etc/ansible directory"
 cp examples/hosts /etc/ansible/.
 error_log "unable to copy hosts file to /etc/ansible"
 
-printf "[localhost]\n127.0.0.1\n\n" >> ${ANSIBLE_HOST_FILE}
+printf "[localhost]\n127.0.0.1\n\n"       >> ${ANSIBLE_HOST_FILE}
+printf "deprecation_warnings=False\n\n"   >> ${ANSIBLE_CONFIG_FILE}
 
 echo "[cluster]"   >> ${ANSIBLE_HOST_FILE}
 for i in $(cat /tmp/hosts.inv)
