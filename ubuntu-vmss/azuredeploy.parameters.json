@@ -8,7 +8,7 @@
     "vmSku": {
       "value": "Standard_A0"
     },
-    "debianOSVersion": {
+    "ubuntuOSVersion": {
       "value": "15.10"
     },
     "vmssName": {

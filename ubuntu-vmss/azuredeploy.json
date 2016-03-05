@@ -33,7 +33,7 @@
         "description":"Size of VMs in the VM Scale Set."
       }
     },
-    "debianOSVersion":{
+    "ubuntuOSVersion":{
       "type":"string",
       "defaultValue":"15.10",
       "allowedValues":[
@@ -42,7 +42,7 @@
         "16.04"
       ],
       "metadata":{
-        "description":"The Debian version for the VM. This will pick a fully patched image of this given Debian version. Allowed values are: 15.10, 14.04.2-LTS."
+        "description":"The Ubuntu version for the VM. This will pick a fully patched image of this given Debian version. Allowed values are: 15.10, 14.04."
       }
     },
     "vmssName":{
@@ -126,7 +126,7 @@
     "osType":{
       "publisher":"Canonical",
       "offer":"UbuntuServer",
-      "sku":"[parameters('debianOSVersion')]",
+      "sku":"[parameters('ubuntuOSVersion')]",
       "version":"latest"
     },
     "imageReference":"[variables('osType')]"

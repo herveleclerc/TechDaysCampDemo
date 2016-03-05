@@ -41,7 +41,7 @@
         "7"
       ],
       "metadata":{
-        "description":"The Debian version for the VM. This will pick a fully patched image of this given Debian version. Allowed values are: 15.10, 14.04.2-LTS."
+        "description":"The Debian version for the VM. This will pick a fully patched image of this given Debian version. Allowed values are: 8, 7."
       }
     },
     "vmssName":{
