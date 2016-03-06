@@ -1,6 +1,7 @@
 # TechDayCamp an Open Source View
 This is Alter Way demo projects to show how open source and Azure fit together.
 
+
                    :::.      :::::::::::::::.,:::::: :::::::..                
                    ;;`;;     ;;;;;;;;;;;'''';;;;'''' ;;;;``;;;;               
                   ,[[ '[[,   [[[     [[      [[cccc   [[[,/[[['               
@@ -19,4 +20,5 @@ This is Alter Way demo projects to show how open source and Azure fit together.
                             .c$$P'  $$    $$$$$$$"  "$$                       
                            d88 _,oo,Y8,  ,8"88 Y8b,,d8P                       
                            MMMUP*"^^ "YmmP  MM  "YMP"                         
-                                                                              
+
+  
