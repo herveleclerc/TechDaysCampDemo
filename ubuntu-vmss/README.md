@@ -11,7 +11,7 @@ The Autoscale rules are configured as follows
 - once the scale out action is completed, the cool down period is 1 Minute  
 
 ## Extensions  
----
+
 ### LinuxDiagnostic  
 
 Allow the owner of the Azure Virtual Machines to obtain diagnostic data for a Linux virtual machine.  
@@ -26,7 +26,7 @@ I this example deploy.sh is launched to install ansible. then ansible provision 
 Allow the owner of the Azure Virtual Machines to install the OmsAgent and onboard to Operations Management Suite
 
   
-  
+
 ### Azure portal  
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fherveleclerc%2FTechDaysCampDemo%2Fmaster%2Fubuntu-vmss%2Fazuredeploy.json" target="_blank">
