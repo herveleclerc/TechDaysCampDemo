@@ -10,11 +10,23 @@ The Autoscale rules are configured as follows
 - if the Percent Processor Time is greater than 50% for 5 Minutes, then the scale out action (add more VM instances, one at a time) is triggered
 - once the scale out action is completed, the cool down period is 1 Minute  
 
+## Extensions  
+---
+### LinuxDiagnostic  
+
+Allow the owner of the Azure Virtual Machines to obtain diagnostic data for a Linux virtual machine.  
+
+### CustomScriptForLinux
+
+Allow the owner of the Azure Virtual Machines to run customized scripts in the VM.
+I this example deploy.sh is launched to install ansible. then ansible provision the stack.    
 
 ### OmsAgent Extension 
 
 Allow the owner of the Azure Virtual Machines to install the OmsAgent and onboard to Operations Management Suite
 
+  
+  
 ### Azure portal  
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fherveleclerc%2FTechDaysCampDemo%2Fmaster%2Fubuntu-vmss%2Fazuredeploy.json" target="_blank">
