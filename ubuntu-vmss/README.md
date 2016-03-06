@@ -11,6 +11,9 @@ The Autoscale rules are configured as follows
 - once the scale out action is completed, the cool down period is 1 Minute  
 
 
+### OmsAgent Extension 
+
+Allow the owner of the Azure Virtual Machines to install the OmsAgent and onboard to Operations Management Suite
 
 ### Azure portal  
 
