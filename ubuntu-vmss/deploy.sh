@@ -10,10 +10,10 @@ narco()
     omiagent=$(pgrep -c omiagent)
     if [ "$mdsdins" != "0" ] && [ "$omsagent" != "0" ] && [ "$omiagent" != "0" ]; then
       log "All MS agents deployed :)" "0"
-      sleep 10
+      break
     else
       log "sleeping ... mdsdins=$mdsdins - omsagent=$omsagent - omiagent=$omiagent" "0"
-      break
+      sleep 10
     fi
     let j=$j+10
     if [ "$j" = "$narc" ]; then
