@@ -2,18 +2,22 @@
 
 narco()
 {
+  narc=$1
   j=0
   while true ; do 
     mdsdins=$(pgrep -c mdsd)
     omsagent=$(pgrep -c omsagent)
     omiagent=$(pgrep -c omiagent)
-    if [ "$mdsdins" = "0" ] || [ "$omsagent" = "0" ] || [ "$omiagent" = "0" ]; then
+    if [ "$mdsdins" != "0" ] && [ "$omsagent" != "0" ] && [ "$omiagent" != "0" ]; then
+      log "All MS agents deployed :)" "0"
       sleep 10
     else
+      log "sleeping ... mdsdins=$mdsdins - omsagent=$omsagent - omiagent=$omiagent" "0"
       break
     fi
     let j=$j+10
-    if [ "$j" = "300" ]; then
+    if [ "$j" = "$narc" ]; then
+      error_log "MS Agents take too long to deploy killing deployment"
       break
     fi
   done
@@ -183,7 +187,7 @@ CRATE_TPL="/tmp/crate.yml.j2"
 
 ## deploy start here
 
-narco 300
+narco 600
 write_fact "${IPpriv}"
 install_curl
 create_crate_config
