@@ -180,10 +180,10 @@ ANSIBLE_CONFIG_FILE=/etc/ansible/ansible.cfg
 CRATE_TPL="/tmp/crate.yml.j2"
 
 ## deploy start here
-
-narco 300
-write_fact
-install_curl
-create_crate_config
-install_ansible
-deploy_crate
+echo "done"
+#narco 300
+#write_fact
+#install_curl
+#create_crate_config
+#install_ansible
+#deploy_crate
