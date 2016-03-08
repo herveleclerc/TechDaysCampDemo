@@ -5,6 +5,8 @@ narco()
   j=0
   while true ; do 
     mdsdins=$(pgrep -c mdsd)
+    omsagent=$(pgrep -c omsagent)
+    omiagent=$(pgrep -c omiagent)
     if [ "$mdsdins" = "0" ]; then
       sleep 10
     else
@@ -180,10 +182,10 @@ ANSIBLE_CONFIG_FILE=/etc/ansible/ansible.cfg
 CRATE_TPL="/tmp/crate.yml.j2"
 
 ## deploy start here
-echo "done"
-#narco 300
-#write_fact
-#install_curl
-#create_crate_config
-#install_ansible
-#deploy_crate
+
+narco 300
+write_fact
+install_curl
+create_crate_config
+install_ansible
+deploy_crate
