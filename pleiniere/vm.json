@@ -1,0 +1,65 @@
+{
+  "tags": {},
+  "provisioningState": "Succeeded",
+  "properties": {
+    "vmId": "d6423a2e-e3e6-45b2-8bc0-9b018ddebf8c",
+    "hardwareProfile": {
+      "vmSize": "standard_a0"
+    },
+    "storageProfile": {
+      "imageReference": {
+        "publisher": "credativ",
+        "offer": "Debian",
+        "sku": "8",
+        "version": "latest"
+      },
+      "osDisk": {
+        "osType": "Linux",
+        "name": "clic0f4b501e4495abd-os-1457383457582",
+        "createOption": "FromImage",
+        "vhd": {
+          "uri": "https://clic0f4b501e4495abd14573.blob.core.windows.net/vhds/clic0f4b501e4495abd-os-1457383457582.vhd"
+        },
+        "caching": "ReadWrite"
+      },
+      "dataDisks": []
+    },
+    "osProfile": {
+      "computerName": "techdayscampvm",
+      "adminUsername": "devops",
+      "linuxConfiguration": {
+        "disablePasswordAuthentication": false
+      },
+      "secrets": []
+    },
+    "networkProfile": {
+      "networkInterfaces": [
+        {
+          "properties": {
+            "primary": true
+          },
+          "id": "/subscriptions/0c6fc86b-cc4b-4139-b8e1-c4741177914f/resourceGroups/techdayscamp/providers/Microsoft.Network/networkInterfaces/nic0"
+        }
+      ]
+    },
+    "diagnosticsProfile": {
+      "bootDiagnostics": {
+        "enabled": true,
+        "storageUri": "https://clic0f4b501e4495abd14573.blob.core.windows.net/"
+      }
+    },
+    "provisioningState": "Succeeded"
+  },
+  "id": "/subscriptions/0c6fc86b-cc4b-4139-b8e1-c4741177914f/resourceGroups/techdayscamp/providers/Microsoft.Compute/virtualMachines/techdayscampvm",
+  "name": "techdayscampvm",
+  "type": "Microsoft.Compute/virtualMachines",
+  "location": "northeurope",
+  "permissions": [
+    {
+      "actions": [
+        "*"
+      ],
+      "notActions": []
+    }
+  ]
+}
