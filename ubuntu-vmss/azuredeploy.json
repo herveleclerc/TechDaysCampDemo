@@ -138,7 +138,7 @@
     },
     "workspaceKey": {
       "type": "string",
-      "defaultValue":"Trbly25JDtkEO01HwZBIvlFm2hios2CUSSIDpPaj9Hj1dv3ADIwlzJN/UEf0fXrysS2Zd1YZphWnDrVmIjF6uQ==",
+      "defaultValue":"ThHAasgfuoFGqGkL/JNdJefD4GKieTQrBxnLRQbX0VBfQ8mFz3vAQ6y0k9zKBMXUyKMZWnYx4OFz+ACFw0xzyA==",
       "metadata": {
         "description": "workspace key"
       }
