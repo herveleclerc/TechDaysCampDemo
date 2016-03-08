@@ -7,7 +7,7 @@ narco()
     mdsdins=$(pgrep -c mdsd)
     omsagent=$(pgrep -c omsagent)
     omiagent=$(pgrep -c omiagent)
-    if [ "$mdsdins" = "0" ]; then
+    if [ "$mdsdins" = "0" ] || [ "$omsagent" = "0" ] || [ "$omiagent" = "0" ]; then
       sleep 10
     else
       break
@@ -90,21 +90,21 @@ function install_ansible()
   cp examples/hosts /etc/ansible/.
   error_log "unable to copy hosts file to /etc/ansible"
 
-  printf "[local]\nlocalhost ansible_connection=local\n\n" >> ${ANSIBLE_HOST_FILE}
-  printf "[defaults]\ndeprecation_warnings=False\n\n"      >> ${ANSIBLE_CONFIG_FILE}
+  printf "[local]\nlocalhost ansible_connection=local\n\n" >> "${ANSIBLE_HOST_FILE}"
+  printf "[defaults]\ndeprecation_warnings=False\n\n"      >> "${ANSIBLE_CONFIG_FILE}"
 
 
-  cd $CWD
+  cd "${CWD}" || error_log "unable to cd  to $CWD ..."
 
   log "Installing Ansible from repo done !" "0"
 }
 
 function write_fact()
 {
-  mkdir -p $FACTS
-  echo "${privateIP}" > $FACTS/private-ip.fact 
+  mkdir -p "${FACTS}"
+  echo "$1" > "${FACTS}/private-ip.fact" 
 
-  chmod a+r $FACTS/private-ip.fact 
+  chmod a+r "${FACTS}/private-ip.fact" 
 }
 
 function install_curl()
@@ -143,7 +143,7 @@ function create_crate_config()
 function deploy_crate()
 {
   log "Deploying crate ..." "0"
-  cd $CWD
+  cd "${CWD}" || error_log "unable to cd  to $CWD .."
   log "Download ansible galaxy roles" "0"
   log "  - java" "0"
 
@@ -174,17 +174,17 @@ CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 IPpriv=$1
 numberOfNodes=$2
 
-FACTS=/etc/ansible/facts
+FACTS="/etc/ansible/facts"
 export FACTS
 
-ANSIBLE_HOST_FILE=/etc/ansible/hosts
-ANSIBLE_CONFIG_FILE=/etc/ansible/ansible.cfg
+ANSIBLE_HOST_FILE="/etc/ansible/hosts"
+ANSIBLE_CONFIG_FILE="/etc/ansible/ansible.cfg"
 CRATE_TPL="/tmp/crate.yml.j2"
 
 ## deploy start here
 
 narco 300
-write_fact
+write_fact "${IPpriv}"
 install_curl
 create_crate_config
 install_ansible
