@@ -131,14 +131,14 @@
     },
     "workspaceId": {
       "type": "string",
-      "defaultValue":"dc02a84b-d590-4e98-9412-be36fa1bc970",
+      "defaultValue":"b79bff93-e283-4c36-a31e-66c43c4ee13b",
       "metadata": {
         "description": "workspace id"
       }
     },
     "workspaceKey": {
       "type": "string",
-      "defaultValue":"ThHAasgfuoFGqGkL/JNdJefD4GKieTQrBxnLRQbX0VBfQ8mFz3vAQ6y0k9zKBMXUyKMZWnYx4OFz+ACFw0xzyA==",
+      "defaultValue":"xQCrmkhexKZQlhSDzS4YhFspj/aoVw4GB7O/ALq/AL6jMHtZ3Szb/s4GgjOtsR6da4w7kLL4OL2qw0sH36at6Q==",
       "metadata": {
         "description": "workspace key"
       }
@@ -461,13 +461,13 @@
     {
       "type": "Microsoft.Insights/autoscaleSettings",
       "apiVersion":"2015-04-01",
-      "name": "autoscalewad",
+      "name": "autoscalewah",
       "location":"[parameters('resourceLocation')]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmSSName'))]"
       ],
       "properties": {
-        "name": "autoscalewad",
+        "name": "autoscalewah",
         "targetResourceUri": "[concat('/subscriptions/',subscription().subscriptionId, '/resourceGroups/',  resourceGroup().name, '/providers/Microsoft.Compute/virtualMachineScaleSets/', parameters('vmSSName'))]",
         "enabled": true,
         "profiles": [
