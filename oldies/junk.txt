@@ -1,3 +1,28 @@
+              ,
+              {
+                "name": "OMS",
+                "properties": {
+                  "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+                  "type": "OmsAgentForLinux",
+                  "typeHandlerVersion": "1.0",
+                  "autoUpgradeMinorVersion": true,
+                  "settings": {
+                     "workspaceId": "[parameters('workspaceId')]"
+                  },
+                  "protectedSettings": {
+                    "workspaceKey": "[parameters('workspaceKey')]"
+                  }
+                }
+              }
+
+
+
+
+
+
+
+
+
 {
       "apiVersion": "[variables('apiVersion')]",
       "name": "[concat('lbPrefix', copyindex())]",

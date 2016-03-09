@@ -181,6 +181,8 @@ create_oms_agent()
   error_log "unable to get ${OMS_DIST}"
   /bin/bash "./${OMS_PROG}" --upgrade -w "${workspaceId}" -s "${workspaceKey}"
   error_log "unable to install ${OMS_DIST}"
+  /etc/init.d/omsagent restart
+  error_log "unable to restart omsagent"
   log "OMS agent Installation done !" "0"
 }
 

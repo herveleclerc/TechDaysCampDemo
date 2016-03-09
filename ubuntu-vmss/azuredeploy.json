@@ -101,7 +101,7 @@
     },
     "vmssName":{
       "type":"string",
-      "defaultValue": "techunode",
+      "defaultValue": "techvnode",
       "metadata":{
         "description":"String used as a base for naming resources (9 characters or less). A hash is prepended to this string for some resources, and resource-specific information is appended."
       },
@@ -486,7 +486,7 @@
                   "metricResourceUri": "[concat('/subscriptions/',subscription().subscriptionId, '/resourceGroups/',  resourceGroup().name, '/providers/Microsoft.Compute/virtualMachineScaleSets/', parameters('vmSSName'))]",
                   "timeGrain": "PT1M",
                   "statistic": "Average",
-                  "timeWindow": "PT5M",
+                  "timeWindow": "PT2M",
                   "timeAggregation": "Average",
                   "operator": "GreaterThan",
                   "threshold": 50.0
@@ -505,7 +505,7 @@
                   "metricResourceUri":"[concat('/subscriptions/',subscription().subscriptionId, '/resourceGroups/',  resourceGroup().name, '/providers/Microsoft.Compute/virtualMachineScaleSets/', parameters('vmSSName'))]",
                   "timeGrain":"PT1M",
                   "statistic":"Average",
-                  "timeWindow":"PT5M",
+                  "timeWindow":"PT2M",
                   "timeAggregation":"Average",
                   "operator":"LessThan",
                   "threshold":20.0
