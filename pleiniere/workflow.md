@@ -26,14 +26,9 @@ azure vm create -g techdayscamp -l northeurope -n techdayscampvm -u devops -p Te
 azure resource show "techdayscamp" "techdayscampvm" Microsoft.Compute/virtualMachines -o "2015-06-15" --json
 
 
-### Create from template
-### Mode
-azure config mode arm
-### Group
-azure group create techsimplevmgrp northeurope
-### VM
 
-azure group deployment create techsimplevmgrp techsimplevm --template-uri https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-linux/azuredeploy.json
+
+
 
 
 
