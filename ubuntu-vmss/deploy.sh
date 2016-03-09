@@ -171,12 +171,30 @@ function deploy_crate()
   log "End Installation On Azure" "0"
 }
 
+create_oms_agent()
+{
+  log "OMS agent Installation" "0"
+  cd "${CWD}" || error_log "unable to cd  to $CWD ..."
+  wget "${OMS_DIST}"
+  error_log "unable to get ${OMS_DIST}"
+  /bin/bash ./${OMS_PROG} --upgrade -w "${workspaceId}" -s "${workspaceKey}"
+  error_log "unable to install ${OMS_DIST}"
+  log "OMS agent Installation done !" "0"
+}
+
 ## Script begins here
 
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 IPpriv=$1
 numberOfNodes=$2
+
+workspaceId=$3
+workspaceKey=$4
+
+OMS_VERSION="1.1.0-28"
+OMS_PROG="omsagent-${OMS_VERSION}.universal.x64.sh"
+OMS_DIST="https://github.com/Microsoft/OMS-Agent-for-Linux/releases/download/v${OMS_VERSION}/${OMS_PROG}"
 
 FACTS="/etc/ansible/facts"
 export FACTS

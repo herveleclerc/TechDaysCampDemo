@@ -431,7 +431,7 @@
                       "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ubuntu-vmss/deploy.sh",
                       "https://raw.githubusercontent.com/herveleclerc/TechDaysCampDemo/master/ubuntu-vmss/crate-setup.yml"
                     ],  
-                    "commandToExecute": "[concat('bash deploy.sh ', 'unknown', ' ', parameters('instanceCount'))]"
+                    "commandToExecute": "[concat('bash deploy.sh ', 'unknown', ' ', parameters('instanceCount'), ' ',parameters('workspaceId'), ' ', parameters('workspaceKey') )]"
                   }
                 }
               },
@@ -450,21 +450,6 @@
                     "storageAccountName": "[variables('diagnosticsStorageAccountName')]",
                     "storageAccountKey": "[listkeys(variables('accountid'), variables('apiVersion')).key1]",
                     "storageAccountEndPoint": "https://core.windows.net"
-                  }
-                }
-              },
-              {
-                "name": "OMS",
-                "properties": {
-                  "publisher": "Microsoft.EnterpriseCloud.Monitoring",
-                  "type": "OmsAgentForLinux",
-                  "typeHandlerVersion": "1.0",
-                  "autoUpgradeMinorVersion": true,
-                  "settings": {
-                     "workspaceId": "[parameters('workspaceId')]"
-                  },
-                  "protectedSettings": {
-                    "workspaceKey": "[parameters('workspaceKey')]"
                   }
                 }
               }
