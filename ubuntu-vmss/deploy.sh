@@ -7,6 +7,8 @@ narco()
   while true ; do 
     mdsdins=$(pgrep -c mdsd)
     omsagent=$(pgrep -c omsagent)
+    # for testing
+    omsagent=1
     omiagent=$(pgrep -c omiagent)
     if [ "$mdsdins" != "0" ] && [ "$omsagent" != "0" ] && [ "$omiagent" != "0" ]; then
       log "All MS agents deployed :)" "0"
@@ -206,6 +208,7 @@ CRATE_TPL="/tmp/crate.yml.j2"
 ## deploy start here
 
 narco 600
+create_oms_agent
 write_fact "${IPpriv}"
 install_curl
 create_crate_config
