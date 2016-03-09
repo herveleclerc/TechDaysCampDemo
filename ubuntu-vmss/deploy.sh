@@ -179,7 +179,7 @@ create_oms_agent()
   cd "${CWD}" || error_log "unable to cd  to $CWD ..."
   wget "${OMS_DIST}"
   error_log "unable to get ${OMS_DIST}"
-  /bin/bash ./${OMS_PROG} --upgrade -w "${workspaceId}" -s "${workspaceKey}"
+  /bin/bash "./${OMS_PROG}" --upgrade -w "${workspaceId}" -s "${workspaceKey}"
   error_log "unable to install ${OMS_DIST}"
   log "OMS agent Installation done !" "0"
 }
