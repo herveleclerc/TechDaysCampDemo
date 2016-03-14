@@ -1,5 +1,5 @@
 
-# Autoscale a Linux VM Scale Set  
+# Autoscale CRATE CLUSTER with a Linux VM Scale Set  
 
 The following template deploys a Linux VM Scale Set integrated with Azure autoscale  
 
