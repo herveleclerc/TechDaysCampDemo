@@ -1,5 +1,5 @@
 
-# Autoscale Crate (crate.io)database Cluster with a Linux VM Scale Set.
+# Autoscale Crate (crate.io) database Cluster with a Linux VM Scale Set.
 
 The following template deploys a Linux VM Scale Set integrated with Azure autoscale. The provisioning of crate ius done with Ansible playbooks and roles.
 
