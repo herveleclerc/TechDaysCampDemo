@@ -58,51 +58,28 @@ function log()
 function install_ansible()
 {
   log "Installing Ansible from repo ..." "0"
-  until apt-get -y update && apt-get -y install python-pip python-dev git htop stress 
+  until apt-get -y update && apt-get -y install python-pip python-dev git htop stress libffi-dev libssl-dev
   do
     log "Lock detected on VM init try again..." "0"
     sleep 2
   done
   error_log "unable to get system packages"
 
-  log "Install ansible required python modules..." "0"
-  pip install PyYAML jinja2 paramiko
-  error_log "unable to install python packages via pip"
-
-
-  log "Clone ansible repo..." "0"
-  rm -rf ansible
-  error_log "unable to remove ansible directory"
-
-  git clone https://github.com/ansible/ansible.git
-  error_log "unable to clone ansible repo"
-
-  cd ansible || error_log "unable to cd to ansible directory"
-
-  log "Clone ansible submodules..." "0"
-  git submodule update --init --recursive
-  error_log "unable to clone ansible submodules"
-
-  log "Install ansible..." "0"
-  make install
-  error_log "unable to install ansible"
-
-  log "Generate ansible files..." "0"
-  rm -rf /etc/ansible
-  error_log "unable to remove /etc/ansible directory"
+  log "Install ansible" "0"
+  pip install --upgrade setuptools   && \
+  pip install --upgrade cryptography && \
+  pip install ansible
+  
+  log "create ansible dir" "0"
   mkdir -p /etc/ansible
   error_log "unable to create /etc/ansible directory"
-
-  cp examples/hosts /etc/ansible/.
-  error_log "unable to copy hosts file to /etc/ansible"
-
+  
   printf "[local]\nlocalhost ansible_connection=local\n\n" >> "${ANSIBLE_HOST_FILE}"
   printf "[defaults]\ndeprecation_warnings=False\n\n"      >> "${ANSIBLE_CONFIG_FILE}"
 
-
   cd "${CWD}" || error_log "unable to cd  to $CWD ..."
 
-  log "Installing Ansible from repo done !" "0"
+  log "Installing Ansible ubuntu repos !" "0"
 }
 
 function write_fact()
